@@ -1,2 +1,6 @@
 .DS_Store
 **/.DS_Store
+
+# Otros perfiles de simulador (cada uno tiene su propio repo .git)
+Simulador Juan/
+Simulador Martha/
