@@ -20713,9 +20713,12 @@
                     <span>ID Number: CC-1234567890</span>
                 </div>
             </div>
-            <div class="header-buttons">
-                <button type="button" class="header-action-btn" onclick="location.reload()" title="Recargar la página (como F5)">Reload Deck</button>
-                <button type="button" class="header-action-btn" title="Notification History" onclick="openNotificationsPanel()">Notification History</button>
+            <div class="header-buttons" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+                <span class="header-watermark" style="font-size: 11px; font-weight: 500; color: #fff; letter-spacing: 0.3px; white-space: nowrap; user-select: none; opacity: 0.9; align-self: flex-start;">Created by: @valentina.claros</span>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="header-action-btn" onclick="location.reload()" title="Recargar la página (como F5)">Reload Deck</button>
+                    <button type="button" class="header-action-btn" title="Notification History" onclick="openNotificationsPanel()">Notification History</button>
+                </div>
             </div>
         </div>
 
