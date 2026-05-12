@@ -1993,7 +1993,6 @@
         }
 
         .tour-highlight {
-            position: relative;
             z-index: 100001 !important;
             box-shadow: 0 0 0 4px #7C4DBC, 0 0 0 8px rgba(124, 77, 188, 0.35), 0 8px 24px rgba(0, 0, 0, 0.35) !important;
             border-radius: 8px !important;
@@ -59159,7 +59158,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     desc: 'Datos básicos, Reload Deck y Notification History.',
                     steps: [
                         { selector: '.user-info', title: 'Información del cliente', body: 'Aquí ves el <strong>nombre completo</strong>, el <strong>Printed Name</strong> y el <strong>ID Number</strong> del cliente atendido. Esta información es de solo lectura.', position: 'bottom' },
-                        { selector: '.tags-section', title: 'Tags del cliente', body: 'Los tags muestran <strong>estados clave</strong> del cliente: si está released, verificación post-email, alertas y bandejas. El icono de bomba indica casos críticos.', position: 'bottom' },
+                        { selector: '.tags-section', title: 'Tags del cliente', body: 'Los tags muestran <strong>estados clave</strong> del cliente: si su cuenta está <strong>embargada</strong>, <strong>desembargada</strong>, si tiene tarjeta <strong>Nu Control</strong>, etc.', position: 'bottom' },
                         { selector: '.header-action-btn--tutorial', title: 'Botón Tutorial', body: 'Puedes reabrir este tour cuando quieras desde este botón.', position: 'bottom' },
                         { selector: '.header-action-btn[title*="Recargar"]', title: 'Reload Deck', body: 'Recarga la página completa (equivalente a F5). Útil para volver al estado inicial del simulador.', position: 'bottom' },
                         { selector: '.header-action-btn[title="Notification History"]', title: 'Notification History', body: 'Abre el panel lateral derecho con el <strong>historial de notificaciones</strong> push/email/SMS enviadas al cliente, con filtros por canal, estado y fecha.', position: 'bottom' }
@@ -59262,13 +59261,22 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         { selector: '#prometheusWidget', title: 'Prometheus', body: 'Sistema <strong>Prometheus</strong> con métricas y alertas técnicas del cliente.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('prometheusWidget')); } }
                     ]
                 },
-                cases: {
-                    emoji: '🗂️',
-                    name: 'Casos y Macros',
-                    desc: 'Cambio, Chat y Cert. Comentarios y macros.',
+                caseHistory: {
+                    emoji: '🕒',
+                    name: 'Case History',
+                    desc: 'Casos en progreso, finalizados y archivados.',
                     steps: [
-                        { selector: '#caseDetailPanel, .case-detail-tabs', title: 'Sistema de casos', body: 'Los casos están divididos en <strong>3 paneles</strong>: <code>Cambio</code> (cambios de datos), <code>Chat</code> (interacciones de chat) y <code>Cert</code> (certificados). Cada uno tiene su propia cola de comentarios.', position: 'top', prepare: function () { var el = document.getElementById('caseDetailPanel') || document.querySelector('.case-detail-tabs'); if (el) scrollIntoCenter(el); } },
-                        { selector: '#caseCommentInputCambio, #caseCommentInputChat, #caseCommentInputCert', title: 'Agregar comentarios', body: 'Escribe en la caja y pulsa <strong>enviar</strong> para agregar comentarios al hilo del caso.', position: 'top' }
+                        { selector: '#sidebarCaseHistoryBtn', title: 'Botón Case History', body: 'En la <strong>barra blanca lateral</strong> encontrarás el icono de <strong>reloj</strong>. Haz clic en él para abrir el panel de Case History.', position: 'left', prepare: function () { closePanelsForTour(); } },
+                        { selector: '#caseHistoryPanel', title: 'Panel de Case History', body: 'Acá podrás encontrar los <strong>casos en progreso, finalizados y archivados</strong> del cliente, sus comentarios y novedades.', position: 'left', prepare: function () { if (typeof openCaseHistoryPanel === 'function') openCaseHistoryPanel(); } }
+                    ]
+                },
+                macros: {
+                    emoji: '⚡',
+                    name: 'Macros',
+                    desc: 'Respuestas predefinidas para los clientes.',
+                    steps: [
+                        { selector: '#sidebarMacrosBtn', title: 'Botón Macros', body: 'En la <strong>barra blanca lateral</strong> encontrarás el icono de <strong>rayo</strong>. Haz clic en él para abrir el panel de Macros.', position: 'left', prepare: function () { closePanelsForTour(); } },
+                        { selector: '#macrosPanel', title: 'Panel de Macros', body: 'Las macros te permitirán <strong>responder a los clientes</strong> según la solicitud que tengan. Recuerda seguir siempre la <strong>Weduka</strong> para su uso correcto.', position: 'left', prepare: function () { if (typeof openMacrosPanel === 'function') openMacrosPanel(); } }
                     ]
                 },
                 notifications: {
@@ -59305,6 +59313,13 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     el.scrollIntoView();
                 }
             }
+
+            function closePanelsForTour() {
+                try { if (typeof closeCaseHistoryPanel === 'function') closeCaseHistoryPanel(); } catch (e) {}
+                try { if (typeof closeMacrosPanel === 'function') closeMacrosPanel(); } catch (e) {}
+                try { if (typeof closeNotificationsPanel === 'function') closeNotificationsPanel(); } catch (e) {}
+            }
+            window.closePanelsForTour = closePanelsForTour;
 
             function buildChaptersGrid() {
                 var grid = document.getElementById('tourChaptersGrid');
@@ -59375,6 +59390,9 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 nextBtn.textContent = (currentStepIndex === ch.steps.length - 1) ? 'Finalizar' : 'Siguiente';
 
                 if (target) {
+                    var pos = getComputedStyle(target).position;
+                    target._tourPrevPosition = pos;
+                    if (pos === 'static') target.style.position = 'relative';
                     target.classList.add('tour-highlight');
                     highlightedEl = target;
                     scrollIntoCenter(target);
@@ -59402,6 +59420,10 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             function clearHighlight() {
                 if (highlightedEl) {
                     highlightedEl.classList.remove('tour-highlight');
+                    if (highlightedEl._tourPrevPosition === 'static') {
+                        highlightedEl.style.position = '';
+                    }
+                    delete highlightedEl._tourPrevPosition;
                     highlightedEl = null;
                 }
             }
@@ -59517,6 +59539,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 clearHighlight();
                 document.getElementById('tourBackdrop').classList.remove('show');
                 document.getElementById('tourTooltip').classList.remove('show');
+                closePanelsForTour();
                 currentChapterId = null;
                 currentStepIndex = 0;
             }
