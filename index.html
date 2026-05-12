@@ -1951,6 +1951,311 @@
             background: #f5f5f5;
         }
 
+        .header-action-btn--tutorial {
+            background: #7C4DBC;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-action-btn--tutorial:hover {
+            background: #6b3fa8;
+        }
+
+        .header-action-btn--tutorial .tutorial-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            color: #7C4DBC;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            margin-right: 6px;
+        }
+
+        /* ============ TOUR TUTORIAL ============ */
+        #tourBackdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 12, 28, 0.55);
+            z-index: 100000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        #tourBackdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .tour-highlight {
+            position: relative;
+            z-index: 100001 !important;
+            box-shadow: 0 0 0 4px #7C4DBC, 0 0 0 8px rgba(124, 77, 188, 0.35), 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+            border-radius: 8px !important;
+            transition: box-shadow 0.18s ease;
+            background-clip: padding-box;
+        }
+
+        #tourTooltip {
+            position: absolute;
+            z-index: 100002;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+            width: 340px;
+            max-width: calc(100vw - 32px);
+            padding: 18px 18px 14px;
+            display: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        }
+
+        #tourTooltip.show {
+            display: block;
+        }
+
+        .tour-tooltip-arrow {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .tour-tooltip-arrow[data-pos="top"] { top: -7px; }
+        .tour-tooltip-arrow[data-pos="bottom"] { bottom: -7px; }
+        .tour-tooltip-arrow[data-pos="left"] { left: -7px; }
+        .tour-tooltip-arrow[data-pos="right"] { right: -7px; }
+
+        .tour-tooltip-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .tour-tooltip-chapter {
+            font-size: 11px;
+            font-weight: 700;
+            color: #7C4DBC;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .tour-tooltip-progress {
+            font-size: 11px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .tour-tooltip-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1F1F1F;
+            margin: 0 0 8px;
+            line-height: 1.3;
+        }
+
+        .tour-tooltip-body {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.5;
+            margin: 0 0 14px;
+        }
+
+        .tour-tooltip-body strong { color: #1F1F1F; }
+        .tour-tooltip-body code {
+            background: #F4EFFA;
+            color: #6b3fa8;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .tour-tooltip-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #ECECEC;
+        }
+
+        .tour-btn {
+            border-radius: 6px;
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            background: #fff;
+            color: #1F1F1F;
+            line-height: 1.2;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .tour-btn--ghost {
+            background: transparent;
+            color: #888;
+            border: none;
+            padding: 7px 8px;
+        }
+
+        .tour-btn--ghost:hover { color: #1F1F1F; }
+
+        .tour-btn--secondary {
+            background: #fff;
+            color: #7C4DBC;
+            border-color: #7C4DBC;
+        }
+
+        .tour-btn--secondary:hover { background: #F4EFFA; }
+
+        .tour-btn--primary {
+            background: #7C4DBC;
+            color: #fff;
+            border-color: #7C4DBC;
+        }
+
+        .tour-btn--primary:hover { background: #6b3fa8; }
+
+        .tour-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ============ TOUR CHAPTERS MODAL ============ */
+        #tourChaptersModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 12, 28, 0.55);
+            z-index: 99998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        #tourChaptersModal.show { display: flex; }
+
+        .tour-chapters-box {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+            width: 100%;
+            max-width: 620px;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tour-chapters-header {
+            background: linear-gradient(135deg, #7C4DBC 0%, #6b3fa8 100%);
+            color: #fff;
+            padding: 22px 24px 18px;
+            position: relative;
+        }
+
+        .tour-chapters-header h2 {
+            margin: 0 0 4px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .tour-chapters-header p {
+            margin: 0;
+            font-size: 13px;
+            opacity: 0.92;
+            line-height: 1.4;
+        }
+
+        .tour-chapters-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tour-chapters-close:hover { background: rgba(255, 255, 255, 0.28); }
+
+        .tour-chapters-body {
+            padding: 18px 24px 22px;
+            overflow-y: auto;
+        }
+
+        .tour-chapters-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tour-chapter-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            background: #FAF8FD;
+            border: 1.5px solid #ECECEC;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+            font-family: inherit;
+        }
+
+        .tour-chapter-card:hover {
+            border-color: #7C4DBC;
+            background: #F4EFFA;
+            transform: translateY(-1px);
+        }
+
+        .tour-chapter-emoji {
+            font-size: 20px;
+            line-height: 1;
+            margin-top: 1px;
+            flex: 0 0 auto;
+        }
+
+        .tour-chapter-info { flex: 1; min-width: 0; }
+
+        .tour-chapter-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1F1F1F;
+            margin: 0 0 2px;
+            line-height: 1.3;
+        }
+
+        .tour-chapter-desc {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.35;
+            margin: 0;
+        }
+
+        @media (max-width: 540px) {
+            .tour-chapters-grid { grid-template-columns: 1fr; }
+            #tourTooltip { width: calc(100vw - 32px); }
+        }
+        /* ============ END TOUR TUTORIAL ============ */
+
         .btn {
             padding: 6px 14px;
             border: none;
@@ -20714,6 +21019,7 @@
                 </div>
             </div>
             <div class="header-buttons">
+                <button type="button" class="header-action-btn header-action-btn--tutorial" title="Abrir tutorial del simulador" onclick="openTourChapters()"><span class="tutorial-icon" aria-hidden="true">?</span>Tutorial</button>
                 <button type="button" class="header-action-btn" onclick="location.reload()" title="Recargar la página (como F5)">Reload Deck</button>
                 <button type="button" class="header-action-btn" title="Notification History" onclick="openNotificationsPanel()">Notification History</button>
             </div>
@@ -58809,6 +59115,436 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             </div>
         </div>
     </div>
+
+    <!-- ================= TOUR TUTORIAL ================= -->
+    <div id="tourChaptersModal" role="dialog" aria-modal="true" aria-labelledby="tourChaptersTitle" onclick="if(event.target===this) closeTourChapters()">
+        <div class="tour-chapters-box">
+            <div class="tour-chapters-header">
+                <button type="button" class="tour-chapters-close" onclick="closeTourChapters()" aria-label="Cerrar">×</button>
+                <h2 id="tourChaptersTitle">Tutorial del simulador</h2>
+                <p>Elige un widget o función para ver cómo funciona. Puedes salir del tour en cualquier momento.</p>
+            </div>
+            <div class="tour-chapters-body">
+                <div class="tour-chapters-grid" id="tourChaptersGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tourBackdrop" onclick="endTour()"></div>
+    <div id="tourTooltip" role="dialog" aria-modal="true" aria-labelledby="tourTooltipTitle">
+        <div class="tour-tooltip-arrow" id="tourTooltipArrow" data-pos="top"></div>
+        <div class="tour-tooltip-header">
+            <span class="tour-tooltip-chapter" id="tourTooltipChapter">CAPÍTULO</span>
+            <span class="tour-tooltip-progress" id="tourTooltipProgress">1 / 5</span>
+        </div>
+        <h3 class="tour-tooltip-title" id="tourTooltipTitle">Título</h3>
+        <p class="tour-tooltip-body" id="tourTooltipBody">Texto</p>
+        <div class="tour-tooltip-footer">
+            <button type="button" class="tour-btn tour-btn--ghost" onclick="endTour()">Saltar</button>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="tour-btn tour-btn--secondary" id="tourPrevBtn" onclick="tourPrev()">Anterior</button>
+                <button type="button" class="tour-btn tour-btn--primary" id="tourNextBtn" onclick="tourNext()">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var TOUR_CHAPTERS = {
+                header: {
+                    emoji: '👤',
+                    name: 'Información del cliente',
+                    desc: 'Datos básicos, Reload Deck y Notification History.',
+                    steps: [
+                        { selector: '.user-info', title: 'Información del cliente', body: 'Aquí ves el <strong>nombre completo</strong>, el <strong>Printed Name</strong> y el <strong>ID Number</strong> del cliente atendido. Esta información es de solo lectura.', position: 'bottom' },
+                        { selector: '.tags-section', title: 'Tags del cliente', body: 'Los tags muestran <strong>estados clave</strong> del cliente: si está released, verificación post-email, alertas y bandejas. El icono de bomba indica casos críticos.', position: 'bottom' },
+                        { selector: '.header-action-btn--tutorial', title: 'Botón Tutorial', body: 'Puedes reabrir este tour cuando quieras desde este botón.', position: 'bottom' },
+                        { selector: '.header-action-btn[title*="Recargar"]', title: 'Reload Deck', body: 'Recarga la página completa (equivalente a F5). Útil para volver al estado inicial del simulador.', position: 'bottom' },
+                        { selector: '.header-action-btn[title="Notification History"]', title: 'Notification History', body: 'Abre el panel lateral derecho con el <strong>historial de notificaciones</strong> push/email/SMS enviadas al cliente, con filtros por canal, estado y fecha.', position: 'bottom' }
+                    ]
+                },
+                personInfoV2: {
+                    emoji: '🪪',
+                    name: 'Person Information V2',
+                    desc: 'Pestañas, copiar campos, otros dispositivos.',
+                    steps: [
+                        { selector: '#personInformationV2Widget', title: 'Person Information V2', body: 'Widget central con la <strong>información personal completa</strong>: documento, dirección, contacto, dispositivos.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('personInformationV2Widget')); } },
+                        { selector: '#personInformationV2Widget [role="tablist"], #personInformationV2Widget .piv2-tabs', title: 'Pestañas', body: 'Usa las pestañas para alternar entre <strong>secciones</strong> (Personal, Contacto, Dispositivos, etc.). Cada pestaña agrupa campos relacionados.', position: 'bottom' },
+                        { selector: '#personInformationV2Widget [data-piv2-copy]', title: 'Copiar campos', body: 'Pasa el cursor sobre cualquier valor y haz clic para <strong>copiarlo al portapapeles</strong>. Se confirma con un toast.', position: 'right' }
+                    ]
+                },
+                prospects: {
+                    emoji: '🔍',
+                    name: 'Prospects',
+                    desc: 'Postulaciones y estado del prospecto.',
+                    steps: [
+                        { selector: '#prospectsWidget', title: 'Prospects', body: 'Lista de <strong>postulaciones del cliente</strong> a productos Nu (Tarjeta, Cuenta, NuBox, etc.). Cada item muestra su estado actual.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('prospectsWidget')); } },
+                        { selector: '#prospectsWidget .pros-collapsible, #prospectsWidget [onclick*="toggleProsCollapsible"]', title: 'Expandir secciones', body: 'Haz clic en una sección para <strong>ver más detalles</strong> del prospecto (fechas, motivos de rechazo, etc.).', position: 'right' }
+                    ]
+                },
+                phones: {
+                    emoji: '📞',
+                    name: 'Phone Numbers',
+                    desc: 'Teléfonos del cliente, agregar nuevos.',
+                    steps: [
+                        { selector: '#phoneNumbersWidget', title: 'Phone Numbers', body: 'Lista de <strong>teléfonos</strong> registrados con el tipo (Móvil, Casa, Trabajo) y la marca de verificado.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('phoneNumbersWidget')); } },
+                        { selector: '#phoneNumbersWidget .phone-type-trigger, #phoneNumbersWidget [data-phone-type]', title: 'Tipo de teléfono', body: 'Haz clic en el chip de tipo para <strong>cambiarlo</strong> entre las opciones disponibles.', position: 'right' },
+                        { selector: '#phoneNumbersWidget [onclick*="togglePhoneAddForm"]', title: 'Agregar teléfono', body: 'Usa este botón para abrir el <strong>formulario de nuevo teléfono</strong> con país, número y tipo.', position: 'top' }
+                    ]
+                },
+                interactionHistory: {
+                    emoji: '💬',
+                    name: 'Interaction History',
+                    desc: 'Filtros por canal y rango de fechas.',
+                    steps: [
+                        { selector: '#interactionHistoryWidget', title: 'Interaction History', body: 'Historial de <strong>interacciones</strong> del cliente: chats, llamadas, emails, autoservicio.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('interactionHistoryWidget')); } },
+                        { selector: '#interactionChannelTabs', title: 'Filtrar por canal', body: 'Usa las pestañas para mostrar solo interacciones de un <strong>canal</strong> específico (Todo, Chat, Llamada, Email, Self-service).', position: 'bottom' },
+                        { selector: '#interactionHistoryWidget [data-interaction-date], #interactionHistoryWidget .interaction-item', title: 'Detalle de interacción', body: 'Haz clic en una interacción para abrir su <strong>detalle</strong> con la transcripción completa y los agentes involucrados.', position: 'right' }
+                    ]
+                },
+                documents: {
+                    emoji: '📄',
+                    name: 'Documents',
+                    desc: 'Documentos asociados al cliente.',
+                    steps: [
+                        { selector: '#documentsWidget', title: 'Documents', body: 'Documentos <strong>cargados o generados</strong> para el cliente: certificados, cédulas, comprobantes.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('documentsWidget')); } }
+                    ]
+                },
+                cards: {
+                    emoji: '💳',
+                    name: 'Cards (Tarjetas)',
+                    desc: 'Tarjetas físicas y virtuales, block, cancel, Card History.',
+                    steps: [
+                        { selector: '#cardsWidget', title: 'Cards', body: 'Widget con <strong>todas las tarjetas</strong> del cliente: físicas y virtuales, de débito y crédito, además de adicionales.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('cardsWidget')); } },
+                        { selector: '#cardsWidget .card-tab, #cardsWidget [role="tab"]', title: 'Tabs Débito / Crédito', body: 'Cambia entre <strong>Débito y Crédito</strong> para ver las tarjetas del tipo correspondiente.', position: 'bottom' },
+                        { selector: '#cardsWidget .card-item:first-of-type', title: 'Expandir tarjeta', body: 'Haz clic en una tarjeta para <strong>ver sus detalles</strong>: número, fecha de emisión, vencimiento y estado.', position: 'left', prepare: function () { var c = document.querySelector('#cardsWidget .card-item'); if (c) c.click(); } },
+                        { selector: '#cardsWidget .card-menu-btn, #cardsWidget [onclick*="toggleCardMenu"]', title: 'Menú de acciones', body: 'Abre el menú con acciones: <strong>Block</strong>, <strong>Cancel</strong>, Issue a new card, Trigger Card event, etc.', position: 'left' },
+                        { selector: '#cardsWidget .card-history-btn', title: 'Card History', body: 'Abre el <strong>historial de estados</strong> de esa tarjeta específica. Cada vez que bloquees, desbloquees o canceles, se agrega una entrada con la fecha.', position: 'left' }
+                    ]
+                },
+                bills: {
+                    emoji: '🧾',
+                    name: 'Bills (Facturas)',
+                    desc: 'Detalle de bill, filtros por tipo y categoría.',
+                    steps: [
+                        { selector: '#billsWidget', title: 'Bills', body: 'Resumen de las <strong>facturas mensuales</strong> del cliente con su estado (pagada, abierta, cerrada).', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('billsWidget')); } },
+                        { selector: '#billsWidget .bill-item:first-of-type, #billsWidget [onclick*="openBillDetail"]', title: 'Abrir detalle', body: 'Haz clic en cualquier bill para abrir el <strong>modal de detalle</strong> con fechas, montos, intereses y todas las transacciones del periodo.', position: 'left' },
+                        { selector: '#billsMoreFiltersBtn', title: 'Filtros de transacciones', body: 'Dentro del detalle del bill, este botón abre el modal <strong>"Filter by..."</strong> donde puedes filtrar las transacciones por <strong>Tipo</strong> (Compras, Pagos, NuPay, etc.) y <strong>Categoría</strong> (Gastos, Descuento, Impuestos). Primero abre un bill para verlo.', position: 'top', prepare: function () { var b = document.querySelector('#billsWidget [onclick*="openBillDetail"]'); if (b) b.click(); } },
+                        { selector: '.bill-csv-btn', title: 'Save Movements In CSV', body: 'Descarga las transacciones del bill como archivo <strong>CSV</strong>.', position: 'top' }
+                    ]
+                },
+                moneyBoxes: {
+                    emoji: '💰',
+                    name: 'Money Boxes',
+                    desc: 'Cajitas de ahorro y sus movimientos.',
+                    steps: [
+                        { selector: '#moneyBoxesWidget', title: 'Money Boxes', body: 'Cajitas de <strong>ahorro programado</strong> del cliente. Cada una muestra su meta, saldo actual y progreso.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('moneyBoxesWidget')); } },
+                        { selector: '.money-boxes-toolbar', title: 'Filtros de cajitas', body: 'Usa la toolbar para <strong>filtrar</strong> las cajitas por estado (Activas, Cerradas) o tipo.', position: 'bottom' }
+                    ]
+                },
+                logistic: {
+                    emoji: '📦',
+                    name: 'Logistic Tracking',
+                    desc: 'Estado y trazabilidad del envío de tarjeta.',
+                    steps: [
+                        { selector: '#logisticTrackingWidget', title: 'Logistic Tracking', body: 'Estado del <strong>envío físico</strong> de tarjeta al cliente: empresa transportadora, número de guía y eventos del recorrido.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('logisticTrackingWidget')); } },
+                        { selector: '#logisticTrackingWidget [onclick*="toggleLogisticDetail"]', title: 'Detalle de seguimiento', body: 'Expande para ver <strong>cada evento</strong> del envío: salida de bodega, en tránsito, en distribución, entregado.', position: 'left' }
+                    ]
+                },
+                riskPrometheus: {
+                    emoji: '⚠️',
+                    name: 'Risk Event / Prometheus',
+                    desc: 'Eventos de riesgo y antifraude.',
+                    steps: [
+                        { selector: '#riskEventWidget', title: 'Risk Event', body: 'Eventos de <strong>riesgo</strong> generados por el motor antifraude: intentos sospechosos, validaciones fallidas, etc.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('riskEventWidget')); } },
+                        { selector: '#prometheusWidget', title: 'Prometheus', body: 'Sistema <strong>Prometheus</strong> con métricas y alertas técnicas del cliente.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('prometheusWidget')); } }
+                    ]
+                },
+                cases: {
+                    emoji: '🗂️',
+                    name: 'Casos y Macros',
+                    desc: 'Cambio, Chat y Cert. Comentarios y macros.',
+                    steps: [
+                        { selector: '#caseDetailPanel, .case-detail-tabs', title: 'Sistema de casos', body: 'Los casos están divididos en <strong>3 paneles</strong>: <code>Cambio</code> (cambios de datos), <code>Chat</code> (interacciones de chat) y <code>Cert</code> (certificados). Cada uno tiene su propia cola de comentarios.', position: 'top', prepare: function () { var el = document.getElementById('caseDetailPanel') || document.querySelector('.case-detail-tabs'); if (el) scrollIntoCenter(el); } },
+                        { selector: '#caseCommentInputCambio, #caseCommentInputChat, #caseCommentInputCert', title: 'Agregar comentarios', body: 'Escribe en la caja y pulsa <strong>enviar</strong> para agregar comentarios al hilo del caso.', position: 'top' }
+                    ]
+                },
+                notifications: {
+                    emoji: '🔔',
+                    name: 'Notifications Panel',
+                    desc: 'Historial de notificaciones del cliente.',
+                    steps: [
+                        { selector: '.header-action-btn[title="Notification History"]', title: 'Abrir el panel', body: 'Haz clic aquí para abrir el panel lateral derecho con el historial de notificaciones.', position: 'bottom' },
+                        { selector: '#notificationsPanel', title: 'Panel de notificaciones', body: 'Muestra cada notificación con su <strong>canal</strong> (push, email, SMS), <strong>estado</strong> (received, failed) y <strong>fecha</strong>. Tiene filtros y búsqueda integrada.', position: 'left', prepare: function () { if (typeof openNotificationsPanel === 'function') openNotificationsPanel(); } }
+                    ]
+                },
+                sidebarRight: {
+                    emoji: '⚡',
+                    name: 'Sidebar derecho (acciones rápidas)',
+                    desc: 'Reloj, atajos y herramientas siempre visibles.',
+                    steps: [
+                        { selector: '#sidebarRight', title: 'Sidebar derecho', body: 'Barra lateral fija con el <strong>reloj</strong>, atajos a herramientas frecuentes y notificaciones. Permanece visible siempre.', position: 'left' }
+                    ]
+                }
+            };
+
+            var currentChapterId = null;
+            var currentStepIndex = 0;
+            var highlightedEl = null;
+
+            function $(sel) { return document.querySelector(sel); }
+            function $$(sel) { return document.querySelectorAll(sel); }
+
+            function scrollIntoCenter(el) {
+                if (!el) return;
+                try {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                } catch (e) {
+                    el.scrollIntoView();
+                }
+            }
+
+            function buildChaptersGrid() {
+                var grid = document.getElementById('tourChaptersGrid');
+                if (!grid) return;
+                grid.innerHTML = '';
+                Object.keys(TOUR_CHAPTERS).forEach(function (key) {
+                    var ch = TOUR_CHAPTERS[key];
+                    var btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'tour-chapter-card';
+                    btn.onclick = function () { startChapter(key); };
+                    btn.innerHTML =
+                        '<span class="tour-chapter-emoji">' + ch.emoji + '</span>' +
+                        '<div class="tour-chapter-info">' +
+                            '<p class="tour-chapter-name">' + ch.name + '</p>' +
+                            '<p class="tour-chapter-desc">' + ch.desc + '</p>' +
+                        '</div>';
+                    grid.appendChild(btn);
+                });
+            }
+
+            function openTourChapters() {
+                buildChaptersGrid();
+                var modal = document.getElementById('tourChaptersModal');
+                if (modal) modal.classList.add('show');
+            }
+
+            function closeTourChapters() {
+                var modal = document.getElementById('tourChaptersModal');
+                if (modal) modal.classList.remove('show');
+            }
+
+            function startChapter(chapterId) {
+                if (!TOUR_CHAPTERS[chapterId]) return;
+                closeTourChapters();
+                currentChapterId = chapterId;
+                currentStepIndex = 0;
+                document.getElementById('tourBackdrop').classList.add('show');
+                document.getElementById('tourTooltip').classList.add('show');
+                showStep();
+            }
+
+            function showStep() {
+                var ch = TOUR_CHAPTERS[currentChapterId];
+                if (!ch) return endTour();
+                var step = ch.steps[currentStepIndex];
+                if (!step) return endTour();
+
+                if (typeof step.prepare === 'function') {
+                    try { step.prepare(); } catch (e) { /* noop */ }
+                }
+
+                setTimeout(function () { renderStep(ch, step); }, step.prepare ? 320 : 0);
+            }
+
+            function renderStep(ch, step) {
+                clearHighlight();
+                var target = findStepTarget(step.selector);
+
+                document.getElementById('tourTooltipChapter').textContent = ch.name;
+                document.getElementById('tourTooltipProgress').textContent = (currentStepIndex + 1) + ' / ' + ch.steps.length;
+                document.getElementById('tourTooltipTitle').textContent = step.title;
+                document.getElementById('tourTooltipBody').innerHTML = step.body;
+
+                var prevBtn = document.getElementById('tourPrevBtn');
+                var nextBtn = document.getElementById('tourNextBtn');
+                prevBtn.disabled = currentStepIndex === 0;
+                nextBtn.textContent = (currentStepIndex === ch.steps.length - 1) ? 'Finalizar' : 'Siguiente';
+
+                if (target) {
+                    target.classList.add('tour-highlight');
+                    highlightedEl = target;
+                    scrollIntoCenter(target);
+                    setTimeout(function () { positionTooltip(target, step.position || 'bottom'); }, 280);
+                } else {
+                    positionTooltipCenter();
+                }
+            }
+
+            function findStepTarget(selector) {
+                if (!selector) return null;
+                var parts = selector.split(',');
+                for (var i = 0; i < parts.length; i++) {
+                    try {
+                        var el = document.querySelector(parts[i].trim());
+                        if (el) {
+                            var r = el.getBoundingClientRect();
+                            if (r.width > 0 && r.height > 0) return el;
+                        }
+                    } catch (e) { /* noop */ }
+                }
+                return null;
+            }
+
+            function clearHighlight() {
+                if (highlightedEl) {
+                    highlightedEl.classList.remove('tour-highlight');
+                    highlightedEl = null;
+                }
+            }
+
+            function positionTooltipCenter() {
+                var tip = document.getElementById('tourTooltip');
+                tip.style.left = '50%';
+                tip.style.top = '50%';
+                tip.style.transform = 'translate(-50%, -50%)';
+                var arrow = document.getElementById('tourTooltipArrow');
+                arrow.style.display = 'none';
+            }
+
+            function positionTooltip(target, position) {
+                var tip = document.getElementById('tourTooltip');
+                var arrow = document.getElementById('tourTooltipArrow');
+                arrow.style.display = 'block';
+                tip.style.transform = 'none';
+
+                var rect = target.getBoundingClientRect();
+                var tipRect = tip.getBoundingClientRect();
+                var margin = 14;
+                var top, left, arrowPos;
+
+                var spaceBottom = window.innerHeight - rect.bottom;
+                var spaceTop = rect.top;
+                var spaceRight = window.innerWidth - rect.right;
+                var spaceLeft = rect.left;
+
+                if (position === 'auto' || !position) {
+                    if (spaceBottom > 220) position = 'bottom';
+                    else if (spaceTop > 220) position = 'top';
+                    else if (spaceRight > 380) position = 'right';
+                    else position = 'left';
+                }
+
+                if (position === 'bottom' && spaceBottom < tipRect.height + margin) {
+                    position = (spaceTop > spaceBottom) ? 'top' : (spaceRight > spaceLeft ? 'right' : 'left');
+                }
+                if (position === 'top' && spaceTop < tipRect.height + margin) {
+                    position = (spaceBottom > spaceTop) ? 'bottom' : (spaceRight > spaceLeft ? 'right' : 'left');
+                }
+                if (position === 'right' && spaceRight < tipRect.width + margin) {
+                    position = (spaceLeft > spaceRight) ? 'left' : (spaceBottom > spaceTop ? 'bottom' : 'top');
+                }
+                if (position === 'left' && spaceLeft < tipRect.width + margin) {
+                    position = (spaceRight > spaceLeft) ? 'right' : (spaceBottom > spaceTop ? 'bottom' : 'top');
+                }
+
+                switch (position) {
+                    case 'top':
+                        top = rect.top + window.scrollY - tipRect.height - margin;
+                        left = rect.left + window.scrollX + rect.width / 2 - tipRect.width / 2;
+                        arrowPos = 'bottom';
+                        break;
+                    case 'right':
+                        top = rect.top + window.scrollY + rect.height / 2 - tipRect.height / 2;
+                        left = rect.right + window.scrollX + margin;
+                        arrowPos = 'left';
+                        break;
+                    case 'left':
+                        top = rect.top + window.scrollY + rect.height / 2 - tipRect.height / 2;
+                        left = rect.left + window.scrollX - tipRect.width - margin;
+                        arrowPos = 'right';
+                        break;
+                    default:
+                        top = rect.bottom + window.scrollY + margin;
+                        left = rect.left + window.scrollX + rect.width / 2 - tipRect.width / 2;
+                        arrowPos = 'top';
+                }
+
+                left = Math.max(12 + window.scrollX, Math.min(left, window.scrollX + window.innerWidth - tipRect.width - 12));
+                top = Math.max(12 + window.scrollY, top);
+
+                tip.style.left = left + 'px';
+                tip.style.top = top + 'px';
+
+                arrow.setAttribute('data-pos', arrowPos);
+                if (arrowPos === 'top' || arrowPos === 'bottom') {
+                    arrow.style.left = '50%';
+                    arrow.style.right = '';
+                    arrow.style.top = arrowPos === 'top' ? '-7px' : '';
+                    arrow.style.bottom = arrowPos === 'bottom' ? '-7px' : '';
+                    arrow.style.transform = 'translateX(-50%) rotate(45deg)';
+                } else {
+                    arrow.style.top = '50%';
+                    arrow.style.bottom = '';
+                    arrow.style.left = arrowPos === 'left' ? '-7px' : '';
+                    arrow.style.right = arrowPos === 'right' ? '-7px' : '';
+                    arrow.style.transform = 'translateY(-50%) rotate(45deg)';
+                }
+            }
+
+            function tourNext() {
+                var ch = TOUR_CHAPTERS[currentChapterId];
+                if (!ch) return endTour();
+                if (currentStepIndex >= ch.steps.length - 1) {
+                    endTour();
+                    setTimeout(openTourChapters, 250);
+                    return;
+                }
+                currentStepIndex++;
+                showStep();
+            }
+
+            function tourPrev() {
+                if (currentStepIndex === 0) return;
+                currentStepIndex--;
+                showStep();
+            }
+
+            function endTour() {
+                clearHighlight();
+                document.getElementById('tourBackdrop').classList.remove('show');
+                document.getElementById('tourTooltip').classList.remove('show');
+                currentChapterId = null;
+                currentStepIndex = 0;
+            }
+
+            document.addEventListener('keydown', function (e) {
+                var backdrop = document.getElementById('tourBackdrop');
+                if (!backdrop || !backdrop.classList.contains('show')) return;
+                if (e.key === 'Escape') { endTour(); }
+                else if (e.key === 'ArrowRight') { tourNext(); }
+                else if (e.key === 'ArrowLeft') { tourPrev(); }
+            });
+
+            window.addEventListener('resize', function () {
+                if (highlightedEl && currentChapterId) {
+                    var ch = TOUR_CHAPTERS[currentChapterId];
+                    var step = ch && ch.steps[currentStepIndex];
+                    if (step) positionTooltip(highlightedEl, step.position || 'bottom');
+                }
+            });
+
+            window.openTourChapters = openTourChapters;
+            window.closeTourChapters = closeTourChapters;
+            window.tourNext = tourNext;
+            window.tourPrev = tourPrev;
+            window.endTour = endTour;
+            window.scrollIntoCenter = scrollIntoCenter;
+        })();
+    </script>
 
 </body>
 </html>
