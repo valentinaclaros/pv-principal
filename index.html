@@ -154,17 +154,23 @@
             border: none;
             border-radius: 6px;
             background: transparent;
-            cursor: default;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #7C4DBC;
             padding: 0;
+            transition: background 0.15s ease;
+        }
+
+        .case-history-rail-btn:hover:not(.is-active) {
+            background: #F4EFFA;
         }
 
         .case-history-rail-btn.is-active {
             background: #E8E3F3;
             color: #5a2d9e;
+            cursor: default;
         }
 
         .case-history-rail-btn svg {
@@ -948,17 +954,23 @@
             border: none;
             border-radius: 6px;
             background: transparent;
-            cursor: default;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #7C4DBC;
             padding: 0;
+            transition: background 0.15s ease;
+        }
+
+        .macros-rail-btn:hover:not(.is-active) {
+            background: #F4EFFA;
         }
 
         .macros-rail-btn.is-active {
             background: #E8E3F3;
             color: #5a2d9e;
+            cursor: default;
         }
 
         .macros-rail-btn svg {
@@ -32905,12 +32917,12 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
     <!-- Panel Macros (rayo en barra blanca) -->
     <div class="macros-panel" id="macrosPanel" role="dialog" aria-modal="true" aria-labelledby="macrosTitle" aria-hidden="true">
         <aside class="macros-rail" aria-label="Navegación">
-            <div class="macros-rail-btn" title="Case History" aria-hidden="true" style="opacity:0.55;">
+            <button type="button" class="macros-rail-btn" title="Case History" aria-label="Case History" onclick="openCaseHistoryPanel()">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l2.5 1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v4h-4M3 21v-4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div class="macros-rail-btn is-active" title="Macros" aria-hidden="true">
+            </button>
+            <button type="button" class="macros-rail-btn is-active" title="Macros" aria-label="Macros" aria-current="true">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/></svg>
-            </div>
+            </button>
         </aside>
         <div class="macros-main">
             <div class="macros-list-view" id="macrosListView">
@@ -33041,12 +33053,12 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
     <!-- Panel Case History (reloj en barra blanca) -->
     <div class="case-history-panel" id="caseHistoryPanel" role="dialog" aria-modal="true" aria-labelledby="caseHistoryTitle" aria-hidden="true">
         <aside class="case-history-rail" aria-label="Navegación">
-            <div class="case-history-rail-btn is-active" title="Case History" aria-hidden="true">
+            <button type="button" class="case-history-rail-btn is-active" title="Case History" aria-label="Case History" aria-current="true">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l2.5 1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v4h-4M3 21v-4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div class="case-history-rail-btn" aria-hidden="true" style="opacity:0.45;">
+            </button>
+            <button type="button" class="case-history-rail-btn" title="Macros" aria-label="Macros" onclick="openMacrosPanel()">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/></svg>
-            </div>
+            </button>
         </aside>
         <div class="case-history-main">
             <div id="caseHistoryListView" class="case-history-list-view">
@@ -59155,13 +59167,17 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 header: {
                     emoji: '👤',
                     name: 'Información del cliente',
-                    desc: 'Datos básicos, Reload Deck y Notification History.',
+                    desc: 'Datos, tags, atajos del header y barra lateral.',
                     steps: [
-                        { selector: '.user-info', title: 'Información del cliente', body: 'Aquí ves el <strong>nombre completo</strong>, el <strong>Printed Name</strong> y el <strong>ID Number</strong> del cliente atendido. Esta información es de solo lectura.', position: 'bottom' },
+                        { selector: '.user-info', title: 'Información del cliente', body: 'Aquí ves el <strong>nombre completo</strong>, el <strong>Printed Name</strong> y el <strong>ID Number</strong> del cliente atendido. Esta información es de solo lectura.', position: 'bottom', prepare: function () { closePanelsForTour(); } },
                         { selector: '.tags-section', title: 'Tags del cliente', body: 'Los tags muestran <strong>estados clave</strong> del cliente: si su cuenta está <strong>embargada</strong>, <strong>desembargada</strong>, si tiene tarjeta <strong>Nu Control</strong>, etc.', position: 'bottom' },
                         { selector: '.header-action-btn--tutorial', title: 'Botón Tutorial', body: 'Puedes reabrir este tour cuando quieras desde este botón.', position: 'bottom' },
                         { selector: '.header-action-btn[title*="Recargar"]', title: 'Reload Deck', body: 'Recarga la página completa (equivalente a F5). Útil para volver al estado inicial del simulador.', position: 'bottom' },
-                        { selector: '.header-action-btn[title="Notification History"]', title: 'Notification History', body: 'Abre el panel lateral derecho con el <strong>historial de notificaciones</strong> push/email/SMS enviadas al cliente, con filtros por canal, estado y fecha.', position: 'bottom' }
+                        { selector: '.header-action-btn[title="Notification History"]', title: 'Notification History', body: 'Abre el panel lateral derecho con el <strong>historial de notificaciones</strong> push/email/SMS enviadas al cliente, con filtros por canal, estado y fecha.', position: 'bottom' },
+                        { selector: '#sidebarCaseHistoryBtn', title: 'Reloj — Case History', body: 'En la <strong>barra blanca lateral</strong> encontrarás el icono de <strong>reloj</strong>. Haz clic en él para abrir el panel de Case History.', position: 'left', prepare: function () { closePanelsForTour(); } },
+                        { selector: '#caseHistoryPanel', title: 'Case History', body: 'Acá podrás encontrar los <strong>casos en progreso, finalizados y archivados</strong> del cliente, sus comentarios y novedades.', position: 'left', prepare: function () { if (typeof openCaseHistoryPanel === 'function') openCaseHistoryPanel(); } },
+                        { selector: '#sidebarMacrosBtn', title: 'Rayo — Macros', body: 'En la <strong>barra blanca lateral</strong> encontrarás el icono de <strong>rayo</strong>. Haz clic en él para abrir el panel de Macros.', position: 'left', prepare: function () { closePanelsForTour(); } },
+                        { selector: '#macrosPanel', title: 'Macros', body: 'Las macros te permitirán <strong>responder a los clientes</strong> según la solicitud que tengan. Recuerda seguir siempre la <strong>Weduka</strong> para su uso correcto.', position: 'left', prepare: function () { if (typeof openMacrosPanel === 'function') openMacrosPanel(); } }
                     ]
                 },
                 personInfoV2: {
@@ -59259,24 +59275,6 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     steps: [
                         { selector: '#riskEventWidget', title: 'Risk Event', body: 'Eventos de <strong>riesgo</strong> generados por el motor antifraude: intentos sospechosos, validaciones fallidas, etc.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('riskEventWidget')); } },
                         { selector: '#prometheusWidget', title: 'Prometheus', body: 'Sistema <strong>Prometheus</strong> con métricas y alertas técnicas del cliente.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('prometheusWidget')); } }
-                    ]
-                },
-                caseHistory: {
-                    emoji: '🕒',
-                    name: 'Case History',
-                    desc: 'Casos en progreso, finalizados y archivados.',
-                    steps: [
-                        { selector: '#sidebarCaseHistoryBtn', title: 'Botón Case History', body: 'En la <strong>barra blanca lateral</strong> encontrarás el icono de <strong>reloj</strong>. Haz clic en él para abrir el panel de Case History.', position: 'left', prepare: function () { closePanelsForTour(); } },
-                        { selector: '#caseHistoryPanel', title: 'Panel de Case History', body: 'Acá podrás encontrar los <strong>casos en progreso, finalizados y archivados</strong> del cliente, sus comentarios y novedades.', position: 'left', prepare: function () { if (typeof openCaseHistoryPanel === 'function') openCaseHistoryPanel(); } }
-                    ]
-                },
-                macros: {
-                    emoji: '⚡',
-                    name: 'Macros',
-                    desc: 'Respuestas predefinidas para los clientes.',
-                    steps: [
-                        { selector: '#sidebarMacrosBtn', title: 'Botón Macros', body: 'En la <strong>barra blanca lateral</strong> encontrarás el icono de <strong>rayo</strong>. Haz clic en él para abrir el panel de Macros.', position: 'left', prepare: function () { closePanelsForTour(); } },
-                        { selector: '#macrosPanel', title: 'Panel de Macros', body: 'Las macros te permitirán <strong>responder a los clientes</strong> según la solicitud que tengan. Recuerda seguir siempre la <strong>Weduka</strong> para su uso correcto.', position: 'left', prepare: function () { if (typeof openMacrosPanel === 'function') openMacrosPanel(); } }
                     ]
                 },
                 notifications: {
