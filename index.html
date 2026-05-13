@@ -2265,6 +2265,10 @@
             .tour-chapters-grid { grid-template-columns: 1fr; }
             #tourTooltip { width: calc(100vw - 32px); }
         }
+
+        #profilePhotoModal.tour-photo-active {
+            z-index: 100001 !important;
+        }
         /* ============ END TOUR TUTORIAL ============ */
 
         .btn {
@@ -41173,7 +41177,10 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
         }
 
         function closeProfilePhotoModal() {
-            document.getElementById('profilePhotoModal').style.display = 'none';
+            const modal = document.getElementById('profilePhotoModal');
+            if (!modal) return;
+            modal.style.display = 'none';
+            modal.classList.remove('tour-photo-active');
         }
 
         function openSavingsChatModal() {
@@ -43781,6 +43788,25 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             const img = document.getElementById('profilePhotoModalImage');
             if (img) img.style.transform = 'rotate(' + profilePhotoRotation + 'deg)';
         }
+
+        // Helper usado por el tutorial: abre el modal y posiciona la foto en el índice indicado
+        function tourSetProfilePhoto(targetIndex) {
+            if (!profilePhotos || profilePhotos.length === 0) return;
+            if (typeof targetIndex !== 'number' || targetIndex < 0 || targetIndex >= profilePhotos.length) return;
+            currentProfilePhotoIndex = targetIndex;
+            profilePhotoRotation = 0;
+            const modal = document.getElementById('profilePhotoModal');
+            const img = document.getElementById('profilePhotoModalImage');
+            if (img) {
+                img.src = profilePhotos[targetIndex];
+                img.style.transform = 'rotate(0deg)';
+            }
+            if (modal) {
+                modal.classList.add('tour-photo-active');
+                modal.style.display = 'flex';
+            }
+        }
+        window.tourSetProfilePhoto = tourSetProfilePhoto;
 
         document.getElementById('profilePhotoModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeProfilePhotoModal();
@@ -59181,11 +59207,72 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 personInfoV2: {
                     emoji: '🪪',
                     name: 'Person Information V2',
-                    desc: 'Pestañas, copiar campos, otros dispositivos.',
+                    desc: 'Datos del cliente, foto y documento de identidad.',
                     steps: [
-                        { selector: '#personInformationV2Widget', title: 'Person Information V2', body: 'Widget central con la <strong>información personal completa</strong>: documento, dirección, contacto, dispositivos.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('personInformationV2Widget')); } },
-                        { selector: '#personInformationV2Widget [role="tablist"], #personInformationV2Widget .piv2-tabs', title: 'Pestañas', body: 'Usa las pestañas para alternar entre <strong>secciones</strong> (Personal, Contacto, Dispositivos, etc.). Cada pestaña agrupa campos relacionados.', position: 'bottom' },
-                        { selector: '#personInformationV2Widget [data-piv2-copy]', title: 'Copiar campos', body: 'Pasa el cursor sobre cualquier valor y haz clic para <strong>copiarlo al portapapeles</strong>. Se confirma con un toast.', position: 'right' }
+                        {
+                            selector: '#personInformationV2Widget',
+                            title: 'Person Information V2',
+                            body: 'Widget central con la <strong>información personal completa</strong> del cliente. Tiene <strong>3 pestañas</strong>: <strong>Customer</strong> (datos personales), <strong>Addresses</strong> (direcciones) y <strong>Devices</strong> (dispositivos).',
+                            position: 'right',
+                            prepare: function () {
+                                closePanelsForTour();
+                                var w = document.getElementById('personInformationV2Widget');
+                                if (w && w.classList.contains('collapsed') && typeof toggleWidget === 'function') {
+                                    try { toggleWidget('personInformationV2Widget'); } catch (e) {}
+                                }
+                                var customerTab = document.querySelector('#personInformationV2Widget .piv2-tab[data-piv2-target="piv2PanelCustomer"]');
+                                if (customerTab && !customerTab.classList.contains('is-active') && typeof piv2SwitchTab === 'function') {
+                                    try { piv2SwitchTab(customerTab); } catch (e) {}
+                                }
+                                scrollIntoCenter(w);
+                            }
+                        },
+                        {
+                            selector: '#piv2PanelCustomer',
+                            title: 'Datos del cliente',
+                            body: 'En la pestaña <strong>Customer</strong> encontrarás todos los <strong>datos del cliente</strong>: <strong>Preferred Name</strong>, <strong>Full Name</strong>, <strong>Printed Name</strong>, <strong>Date of Birth</strong>, <strong>Email</strong>, <strong>Phone</strong> y <strong>Tax ID</strong>, entre otros. Junto a cada campo verás un ícono para <strong>copiar el valor</strong> al portapapeles con un solo clic.',
+                            position: 'right',
+                            prepare: function () {
+                                if (typeof closeProfilePhotoModal === 'function') closeProfilePhotoModal();
+                                scrollIntoCenter(document.getElementById('piv2PanelCustomer'));
+                            }
+                        },
+                        {
+                            selector: '#profilePhotoModalImage',
+                            title: 'Foto del cliente',
+                            body: 'Acá se abre la <strong>foto de perfil</strong> del cliente. Para verla en el simulador, haz clic sobre la foto que aparece en el widget de Person Information.',
+                            position: 'right',
+                            prepare: function () {
+                                if (typeof tourSetProfilePhoto === 'function') tourSetProfilePhoto(0);
+                            }
+                        },
+                        {
+                            selector: '#profilePhotoModalImage',
+                            title: 'Documento de identidad — frontal',
+                            body: 'Esta es la <strong>cara frontal</strong> del documento de identidad del cliente. Aquí podrás verificar <strong>nombre completo</strong>, <strong>número de documento</strong>, <strong>fecha de nacimiento</strong> y la <strong>fotografía</strong>.',
+                            position: 'right',
+                            prepare: function () {
+                                if (typeof tourSetProfilePhoto === 'function') tourSetProfilePhoto(1);
+                            }
+                        },
+                        {
+                            selector: '#profilePhotoModalImage',
+                            title: 'Documento de identidad — trasera',
+                            body: 'Esta es la <strong>cara trasera</strong> del documento, con datos adicionales: <strong>lugar y fecha de expedición</strong>, <strong>estatura</strong>, <strong>RH</strong> y <strong>huella</strong>.',
+                            position: 'right',
+                            prepare: function () {
+                                if (typeof tourSetProfilePhoto === 'function') tourSetProfilePhoto(2);
+                            }
+                        },
+                        {
+                            selector: '#profilePhotoModal .profile-photo-modal-content',
+                            title: '¿Cómo pasar entre imágenes?',
+                            body: 'Usa las <strong>flechas laterales</strong> ‹ › para navegar entre la <strong>foto del cliente</strong> y ambas caras del <strong>documento de identidad</strong>. El botón <strong>⟳</strong> en la parte inferior te permite <strong>rotar la imagen 90°</strong> cuando se necesite verla en otra orientación.',
+                            position: 'bottom',
+                            prepare: function () {
+                                if (typeof tourSetProfilePhoto === 'function') tourSetProfilePhoto(0);
+                            }
+                        }
                     ]
                 },
                 prospects: {
@@ -59314,6 +59401,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 try { if (typeof closeCaseHistoryPanel === 'function') closeCaseHistoryPanel(); } catch (e) {}
                 try { if (typeof closeMacrosPanel === 'function') closeMacrosPanel(); } catch (e) {}
                 try { if (typeof closeNotificationsPanel === 'function') closeNotificationsPanel(); } catch (e) {}
+                try { if (typeof closeProfilePhotoModal === 'function') closeProfilePhotoModal(); } catch (e) {}
             }
             window.closePanelsForTour = closePanelsForTour;
 
