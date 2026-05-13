@@ -59204,43 +59204,43 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         { selector: '#macrosPanel', title: 'Macros', body: 'Las macros te permitirán <strong>responder a los clientes</strong> según la solicitud que tengan. Recuerda seguir siempre la <strong>Weduka</strong> para su uso correcto.', position: 'left', prepare: function () { closePanelsForTour(); if (typeof openMacrosPanel === 'function') openMacrosPanel(); } }
                     ]
                 },
-                personInfoV2: {
+                personInfo: {
                     emoji: '🪪',
-                    name: 'Person Information V2',
+                    name: 'Person Information',
                     desc: 'Datos del cliente, foto y documento de identidad.',
                     steps: [
                         {
-                            selector: '#personInformationV2Widget',
-                            title: 'Person Information V2',
-                            body: 'Widget central con la <strong>información personal completa</strong> del cliente. Tiene <strong>3 pestañas</strong>: <strong>Customer</strong> (datos personales), <strong>Addresses</strong> (direcciones) y <strong>Devices</strong> (dispositivos).',
+                            selector: '#personInfoWidget',
+                            title: 'Person Information',
+                            body: 'Widget con la <strong>información personal completa</strong> del cliente: nombre, documento, contacto, direcciones e identificadores.',
                             position: 'right',
                             prepare: function () {
                                 closePanelsForTour();
-                                var w = document.getElementById('personInformationV2Widget');
+                                var w = document.getElementById('personInfoWidget');
                                 if (w && w.classList.contains('collapsed') && typeof toggleWidget === 'function') {
-                                    try { toggleWidget('personInformationV2Widget'); } catch (e) {}
-                                }
-                                var customerTab = document.querySelector('#personInformationV2Widget .piv2-tab[data-piv2-target="piv2PanelCustomer"]');
-                                if (customerTab && !customerTab.classList.contains('is-active') && typeof piv2SwitchTab === 'function') {
-                                    try { piv2SwitchTab(customerTab); } catch (e) {}
+                                    try { toggleWidget('personInfoWidget'); } catch (e) {}
                                 }
                                 scrollIntoCenter(w);
                             }
                         },
                         {
-                            selector: '#piv2PanelCustomer',
+                            selector: '#personInfoWidget .info-section.person-info-section-bordered',
                             title: 'Datos del cliente',
-                            body: 'En la pestaña <strong>Customer</strong> encontrarás todos los <strong>datos del cliente</strong>: <strong>Preferred Name</strong>, <strong>Full Name</strong>, <strong>Printed Name</strong>, <strong>Date of Birth</strong>, <strong>Email</strong>, <strong>Phone</strong> y <strong>Tax ID</strong>, entre otros. Junto a cada campo verás un ícono para <strong>copiar el valor</strong> al portapapeles con un solo clic.',
+                            body: 'Aquí ves todos los datos del cliente: <strong>Preferred Name</strong>, <strong>Email</strong>, <strong>Printed Name</strong>, <strong>Tax ID</strong>, <strong>Birthdate</strong>, <strong>Marital Status</strong>, <strong>Shipping Address</strong>, <strong>Billing Address</strong>, <strong>Phone Number</strong>, <strong>Customer ID</strong> y <strong>Prospect ID</strong>. Haz clic en cualquier etiqueta o valor para <strong>copiarlo</strong> al portapapeles.',
                             position: 'right',
                             prepare: function () {
                                 if (typeof closeProfilePhotoModal === 'function') closeProfilePhotoModal();
-                                scrollIntoCenter(document.getElementById('piv2PanelCustomer'));
+                                var w = document.getElementById('personInfoWidget');
+                                if (w && w.classList.contains('collapsed') && typeof toggleWidget === 'function') {
+                                    try { toggleWidget('personInfoWidget'); } catch (e) {}
+                                }
+                                scrollIntoCenter(document.querySelector('#personInfoWidget .info-section.person-info-section-bordered'));
                             }
                         },
                         {
                             selector: '#profilePhotoModalImage',
                             title: 'Foto del cliente',
-                            body: 'Acá se abre la <strong>foto de perfil</strong> del cliente. Para verla en el simulador, haz clic sobre la foto que aparece en el widget de Person Information.',
+                            body: 'Acá se abre la <strong>foto de perfil</strong> del cliente. En el simulador, haz clic sobre la foto que aparece dentro del widget Person Information para verla ampliada.',
                             position: 'right',
                             prepare: function () {
                                 if (typeof tourSetProfilePhoto === 'function') tourSetProfilePhoto(0);
