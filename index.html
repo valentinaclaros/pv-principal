@@ -2270,6 +2270,10 @@
             z-index: 100001 !important;
         }
 
+        .modal-overlay.tour-modal-active {
+            z-index: 100001 !important;
+        }
+
         .tour-context-active {
             position: relative !important;
             z-index: 100001 !important;
@@ -43814,6 +43818,34 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
         }
         window.tourSetProfilePhoto = tourSetProfilePhoto;
 
+        // Helpers del tutorial para los modales de Interaction History
+        function tourCloseInteractionModals() {
+            ['certificateEmailModal', 'documentsChatModal', 'savingsChatModal'].forEach(function (id) {
+                var m = document.getElementById(id);
+                if (m) m.classList.remove('tour-modal-active');
+            });
+            try { if (typeof closeCertificateEmailModal === 'function') closeCertificateEmailModal(); } catch (e) {}
+            try { if (typeof closeDocumentsChatModal === 'function') closeDocumentsChatModal(); } catch (e) {}
+            try { if (typeof closeSavingsChatModal === 'function') closeSavingsChatModal(); } catch (e) {}
+        }
+        window.tourCloseInteractionModals = tourCloseInteractionModals;
+
+        function tourOpenEmailModal() {
+            tourCloseInteractionModals();
+            if (typeof openCertificateEmailModal === 'function') openCertificateEmailModal();
+            var modal = document.getElementById('certificateEmailModal');
+            if (modal) modal.classList.add('tour-modal-active');
+        }
+        window.tourOpenEmailModal = tourOpenEmailModal;
+
+        function tourOpenChatModal() {
+            tourCloseInteractionModals();
+            if (typeof openDocumentsChatModal === 'function') openDocumentsChatModal();
+            var modal = document.getElementById('documentsChatModal');
+            if (modal) modal.classList.add('tour-modal-active');
+        }
+        window.tourOpenChatModal = tourOpenChatModal;
+
         document.getElementById('profilePhotoModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeProfilePhotoModal();
         });
@@ -59376,11 +59408,129 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 interactionHistory: {
                     emoji: '💬',
                     name: 'Interaction History',
-                    desc: 'Filtros por canal y rango de fechas.',
+                    desc: 'Filtros, lista y detalle de cada tipo de interacción.',
                     steps: [
-                        { selector: '#interactionHistoryWidget', title: 'Interaction History', body: 'Historial de <strong>interacciones</strong> del cliente: chats, llamadas, emails, autoservicio.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('interactionHistoryWidget')); } },
-                        { selector: '#interactionChannelTabs', title: 'Filtrar por canal', body: 'Usa las pestañas para mostrar solo interacciones de un <strong>canal</strong> específico (Todo, Chat, Llamada, Email, Self-service).', position: 'bottom' },
-                        { selector: '#interactionHistoryWidget [data-interaction-date], #interactionHistoryWidget .interaction-item', title: 'Detalle de interacción', body: 'Haz clic en una interacción para abrir su <strong>detalle</strong> con la transcripción completa y los agentes involucrados.', position: 'right' }
+                        {
+                            selector: '#interactionWidget',
+                            title: 'Interaction History',
+                            body: 'Widget con el <strong>historial de interacciones</strong> del cliente: <strong>chats</strong>, <strong>emails</strong> y <strong>llamadas</strong>.',
+                            position: 'right',
+                            prepare: function () {
+                                closePanelsForTour();
+                                var w = document.getElementById('interactionWidget');
+                                if (w && w.classList.contains('collapsed') && typeof toggleWidget === 'function') {
+                                    try { toggleWidget('interactionWidget'); } catch (e) {}
+                                }
+                            }
+                        },
+                        {
+                            selector: '#interactionFilters',
+                            context: '#interactionWidget',
+                            title: 'Filtro por fechas',
+                            body: 'Selecciona un <strong>período</strong> con <strong>Start date</strong> y <strong>End date</strong>. Solo se mostrarán las interacciones dentro del rango elegido.',
+                            position: 'right'
+                        },
+                        {
+                            selector: '#interactionChannelTabs',
+                            context: '#interactionWidget',
+                            title: 'Filtro por canal',
+                            body: 'Pestañas para mostrar solo interacciones de un canal: <strong>All</strong>, <strong>Chat</strong>, <strong>Email</strong> o <strong>Phone</strong>.',
+                            position: 'right'
+                        },
+                        {
+                            selector: '#interactionsList',
+                            context: '#interactionWidget',
+                            title: 'Lista de interacciones',
+                            body: 'Aquí aparecen <strong>todas las interacciones</strong> agrupadas por año, de la más reciente a la más antigua. Cada ítem trae fecha, hora, canal y datos clave.',
+                            position: 'right'
+                        },
+                        {
+                            selector: '#interactionsList .interaction-item[data-interaction-channel="email"]',
+                            context: '#interactionWidget',
+                            title: 'Interacción tipo Email',
+                            body: 'Email enviado al cliente. Al hacer clic se abre el <strong>correo completo</strong> con el asunto, remitente, cuerpo y adjuntos.',
+                            position: 'right',
+                            prepare: function () { tourCloseInteractionModals(); }
+                        },
+                        {
+                            selector: '#certificateEmailModal .chat-modal-header',
+                            title: 'Email — encabezado',
+                            body: 'Encabezado del correo: muestra el tipo de interacción (<strong>Email</strong>) y la <strong>fecha y hora</strong> en que fue enviado.',
+                            position: 'bottom',
+                            prepare: function () { tourOpenEmailModal(); }
+                        },
+                        {
+                            selector: '#certificateEmailModal .email-modal-subject',
+                            title: 'Asunto del email',
+                            body: 'El <strong>asunto</strong> indica el motivo del correo. En este caso, una solicitud de certificado.',
+                            position: 'bottom'
+                        },
+                        {
+                            selector: '#certificateEmailModal .email-modal-meta',
+                            title: 'Remitente y fecha',
+                            body: '<strong>Quién envió el correo</strong> (cuenta de Nu) y la <strong>fecha y hora exactas</strong>.',
+                            position: 'bottom'
+                        },
+                        {
+                            selector: '#certificateEmailModal .email-body-card',
+                            title: 'Cuerpo del email',
+                            body: '<strong>Contenido del correo</strong> tal como fue enviado al cliente. Incluye saludo, explicación y firma.',
+                            position: 'left'
+                        },
+                        {
+                            selector: '#certificateEmailModal .email-attachment-row',
+                            title: 'Archivo adjunto',
+                            body: 'Documentos adjuntos al correo. Haz clic en el ícono para <strong>descargar el archivo</strong>.',
+                            position: 'top'
+                        },
+                        {
+                            selector: '#interactionsList .interaction-item[data-interaction-channel="chat"]',
+                            context: '#interactionWidget',
+                            title: 'Interacción tipo Chat',
+                            body: 'Conversación de <strong>chat</strong> con el cliente. Al hacer clic se abre la <strong>transcripción completa</strong> del chat.',
+                            position: 'right',
+                            prepare: function () { tourCloseInteractionModals(); }
+                        },
+                        {
+                            selector: '#documentsChatModal .chat-modal-header',
+                            title: 'Chat — encabezado',
+                            body: 'Encabezado del chat con el tipo de interacción y la <strong>fecha y hora</strong> de la conversación.',
+                            position: 'bottom',
+                            prepare: function () { tourOpenChatModal(); }
+                        },
+                        {
+                            selector: '#documentsChatModal .chat-modal-body',
+                            title: 'Conversación completa',
+                            body: 'Aquí está la <strong>transcripción del chat</strong>. Los mensajes están ordenados cronológicamente con su hora.',
+                            position: 'left'
+                        },
+                        {
+                            selector: '#documentsChatModal .chat-msg--right',
+                            title: 'Mensajes del Equipo Nu',
+                            body: 'Los mensajes del <strong>Equipo Nu / Atención al cliente</strong> aparecen alineados a la <strong>derecha</strong>.',
+                            position: 'left'
+                        },
+                        {
+                            selector: '#documentsChatModal .chat-msg--left',
+                            title: 'Mensajes del cliente',
+                            body: 'Los mensajes del <strong>cliente</strong> aparecen alineados a la <strong>izquierda</strong>, con su nombre y hora de envío.',
+                            position: 'right'
+                        },
+                        {
+                            selector: '#interactionsList .interaction-item[data-interaction-channel="phone"]',
+                            context: '#interactionWidget',
+                            title: 'Interacción tipo Phone (llamada)',
+                            body: 'Llamadas telefónicas. A diferencia del chat y el email, <strong>no se abre una transcripción</strong>. Solo se muestran los <strong>datos clave</strong> directamente en el ítem.',
+                            position: 'right',
+                            prepare: function () { tourCloseInteractionModals(); }
+                        },
+                        {
+                            selector: '#interactionsList .interaction-item[data-interaction-channel="phone"] .interaction-email',
+                            context: '#interactionWidget',
+                            title: 'Datos de la llamada',
+                            body: 'Cada llamada muestra el <strong>email del agente</strong>, el <strong>case number</strong> y el <strong>número telefónico</strong> desde el que se contactó al cliente. Cada uno se puede copiar con el ícono 📋.',
+                            position: 'right'
+                        }
                     ]
                 },
                 documents: {
@@ -59488,6 +59638,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 try { if (typeof closeMacrosPanel === 'function') closeMacrosPanel(); } catch (e) {}
                 try { if (typeof closeNotificationsPanel === 'function') closeNotificationsPanel(); } catch (e) {}
                 try { if (typeof closeProfilePhotoModal === 'function') closeProfilePhotoModal(); } catch (e) {}
+                try { if (typeof tourCloseInteractionModals === 'function') tourCloseInteractionModals(); } catch (e) {}
             }
             window.closePanelsForTour = closePanelsForTour;
 
