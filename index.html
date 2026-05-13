@@ -2269,6 +2269,12 @@
         #profilePhotoModal.tour-photo-active {
             z-index: 100001 !important;
         }
+
+        .tour-context-active {
+            position: relative !important;
+            z-index: 100001 !important;
+            overflow: visible !important;
+        }
         /* ============ END TOUR TUTORIAL ============ */
 
         .btn {
@@ -59214,6 +59220,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                             title: 'Person Information',
                             body: 'Widget con la <strong>información personal completa</strong> del cliente: nombre, documento, contacto, direcciones e identificadores.',
                             position: 'right',
+                            noScroll: true,
                             prepare: function () {
                                 closePanelsForTour();
                                 var w = document.getElementById('personInfoWidget');
@@ -59224,72 +59231,84 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="preferredName"]',
+                            context: '#personInfoWidget',
                             title: 'Preferred Name',
                             body: 'Nombre con el que el cliente prefiere ser llamado. Entre paréntesis aparece su nombre completo.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="email"]',
+                            context: '#personInfoWidget',
                             title: 'Email',
                             body: 'Correo electrónico registrado del cliente. El ícono verde indica que está <strong>verificado</strong>.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="printedName"]',
+                            context: '#personInfoWidget',
                             title: 'Printed Name',
                             body: 'Nombre que sale <strong>impreso en la tarjeta física</strong> del cliente.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="taxId"]',
+                            context: '#personInfoWidget',
                             title: 'Tax ID',
                             body: 'Número de identificación tributaria del cliente. En Colombia corresponde a la <strong>cédula</strong> con su tipo de documento (CC).',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="birthdate"]',
+                            context: '#personInfoWidget',
                             title: 'Birthdate',
                             body: '<strong>Fecha de nacimiento</strong> del cliente.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="maritalStatus"]',
+                            context: '#personInfoWidget',
                             title: 'Marital Status',
                             body: '<strong>Estado civil</strong> del cliente: None, Single, Divorced, Married, Widower o Separated.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="shippingAddress"]',
+                            context: '#personInfoWidget',
                             title: 'Shipping Address',
                             body: '<strong>Dirección de envío</strong> registrada. El aviso recuerda que para envíos en curso debes confirmar en el widget <strong>Shipping Info</strong>.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="billingAddress"]',
+                            context: '#personInfoWidget',
                             title: 'Billing Address',
                             body: '<strong>Dirección de facturación</strong> del cliente.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="phoneNumber"]',
+                            context: '#personInfoWidget',
                             title: 'Phone Number',
                             body: '<strong>Teléfono principal</strong> del cliente.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="customerId"]',
+                            context: '#personInfoWidget',
                             title: 'Customer ID',
                             body: 'Identificador único del cliente dentro de la plataforma.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="prospectId"]',
+                            context: '#personInfoWidget',
                             title: 'Prospect ID',
                             body: 'Identificador del cliente como <strong>prospecto</strong>, antes de convertirse en cliente activo.',
                             position: 'right'
                         },
                         {
                             selector: '#personInfoWidget [data-tour-field="photo"]',
+                            context: '#personInfoWidget',
                             title: 'Foto del cliente',
                             body: 'Acá se abre la <strong>foto de perfil</strong> del cliente. Haz clic sobre la foto para verla ampliada junto con el documento de identidad.',
                             position: 'right',
@@ -59444,6 +59463,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             var currentChapterId = null;
             var currentStepIndex = 0;
             var highlightedEl = null;
+            var contextEl = null;
 
             function $(sel) { return document.querySelector(sel); }
             function $$(sel) { return document.querySelectorAll(sel); }
@@ -59454,11 +59474,12 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 var vh = window.innerHeight || document.documentElement.clientHeight;
                 var topMargin = 80;
                 var bottomMargin = 40;
-                if (r.top >= topMargin && r.bottom <= vh - bottomMargin) return;
+                if (r.top >= topMargin && r.top <= vh - bottomMargin) return;
                 try {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                    var targetY = window.scrollY + r.top - topMargin;
+                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
                 } catch (e) {
-                    el.scrollIntoView();
+                    try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (err) { el.scrollIntoView(); }
                 }
             }
 
@@ -59526,6 +59547,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
 
             function renderStep(ch, step) {
                 clearHighlight();
+                clearTourContext();
                 var target = findStepTarget(step.selector);
 
                 document.getElementById('tourTooltipChapter').textContent = ch.name;
@@ -59538,13 +59560,26 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 prevBtn.disabled = currentStepIndex === 0;
                 nextBtn.textContent = (currentStepIndex === ch.steps.length - 1) ? 'Finalizar' : 'Siguiente';
 
+                if (step.context) {
+                    try {
+                        var ctx = document.querySelector(step.context);
+                        if (ctx) {
+                            ctx._tourPrevPosition = getComputedStyle(ctx).position;
+                            ctx._tourPrevOverflow = ctx.style.overflow;
+                            if (ctx._tourPrevPosition === 'static') ctx.style.position = 'relative';
+                            ctx.classList.add('tour-context-active');
+                            contextEl = ctx;
+                        }
+                    } catch (e) { /* noop */ }
+                }
+
                 if (target) {
                     var pos = getComputedStyle(target).position;
                     target._tourPrevPosition = pos;
                     if (pos === 'static') target.style.position = 'relative';
                     target.classList.add('tour-highlight');
                     highlightedEl = target;
-                    scrollIntoCenter(target);
+                    if (!step.noScroll) scrollIntoCenter(target);
                     setTimeout(function () { positionTooltip(target, step.position || 'bottom'); }, 280);
                 } else {
                     positionTooltipCenter();
@@ -59574,6 +59609,18 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     }
                     delete highlightedEl._tourPrevPosition;
                     highlightedEl = null;
+                }
+            }
+
+            function clearTourContext() {
+                if (contextEl) {
+                    contextEl.classList.remove('tour-context-active');
+                    if (contextEl._tourPrevPosition === 'static') {
+                        contextEl.style.position = '';
+                    }
+                    delete contextEl._tourPrevPosition;
+                    delete contextEl._tourPrevOverflow;
+                    contextEl = null;
                 }
             }
 
@@ -59686,6 +59733,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
 
             function endTour() {
                 clearHighlight();
+                clearTourContext();
                 document.getElementById('tourBackdrop').classList.remove('show');
                 document.getElementById('tourTooltip').classList.remove('show');
                 closePanelsForTour();
