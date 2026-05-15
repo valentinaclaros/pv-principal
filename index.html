@@ -59252,7 +59252,6 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                             title: 'Person Information',
                             body: 'Widget con la <strong>información personal completa</strong> del cliente: nombre, documento, contacto, direcciones e identificadores.',
                             position: 'right',
-                            noScroll: true,
                             prepare: function () {
                                 closePanelsForTour();
                                 var w = document.getElementById('personInfoWidget');
@@ -59690,7 +59689,10 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     highlightedEl = target;
                     var didScroll = !step.noScroll && scrollIntoCenter(target);
                     var delay = didScroll ? 560 : 120;
-                    setTimeout(function () { positionTooltip(target, step.position || 'bottom'); }, delay);
+                    setTimeout(function () {
+                        positionTooltip(target, step.position || 'bottom');
+                        if (!step.noScroll) ensureTooltipVisible(target, step.position || 'bottom');
+                    }, delay);
                 } else {
                     positionTooltipCenter();
                 }
@@ -59820,6 +59822,30 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     arrow.style.left = arrowPos === 'left' ? '-7px' : '';
                     arrow.style.right = arrowPos === 'right' ? '-7px' : '';
                     arrow.style.transform = 'translateY(-50%) rotate(45deg)';
+                }
+            }
+
+            function ensureTooltipVisible(target, position) {
+                var tip = document.getElementById('tourTooltip');
+                if (!tip || !target) return;
+                var tipRect = tip.getBoundingClientRect();
+                var targetRect = target.getBoundingClientRect();
+                var vh = window.innerHeight || document.documentElement.clientHeight;
+                var margin = 16;
+
+                var bottomOverflow = tipRect.bottom - (vh - margin);
+                var topOverflow = margin - tipRect.top;
+                var targetBottomOverflow = targetRect.bottom - (vh - margin);
+                var targetTopOverflow = margin - targetRect.top;
+                var overflow = Math.max(bottomOverflow, targetBottomOverflow);
+                var underflow = Math.max(topOverflow, targetTopOverflow);
+
+                if (overflow > 0) {
+                    window.scrollBy({ top: overflow, left: 0, behavior: 'smooth' });
+                    setTimeout(function () { positionTooltip(target, position); }, 360);
+                } else if (underflow > 0) {
+                    window.scrollBy({ top: -underflow, left: 0, behavior: 'smooth' });
+                    setTimeout(function () { positionTooltip(target, position); }, 360);
                 }
             }
 
