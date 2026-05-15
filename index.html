@@ -59386,25 +59386,6 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         }
                     ]
                 },
-                prospects: {
-                    emoji: '🔍',
-                    name: 'Prospects',
-                    desc: 'Postulaciones y estado del prospecto.',
-                    steps: [
-                        { selector: '#prospectsWidget', title: 'Prospects', body: 'Lista de <strong>postulaciones del cliente</strong> a productos Nu (Tarjeta, Cuenta, NuBox, etc.). Cada item muestra su estado actual.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('prospectsWidget')); } },
-                        { selector: '#prospectsWidget .pros-collapsible, #prospectsWidget [onclick*="toggleProsCollapsible"]', title: 'Expandir secciones', body: 'Haz clic en una sección para <strong>ver más detalles</strong> del prospecto (fechas, motivos de rechazo, etc.).', position: 'right' }
-                    ]
-                },
-                phones: {
-                    emoji: '📞',
-                    name: 'Phone Numbers',
-                    desc: 'Teléfonos del cliente, agregar nuevos.',
-                    steps: [
-                        { selector: '#phoneNumbersWidget', title: 'Phone Numbers', body: 'Lista de <strong>teléfonos</strong> registrados con el tipo (Móvil, Casa, Trabajo) y la marca de verificado.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('phoneNumbersWidget')); } },
-                        { selector: '#phoneNumbersWidget .phone-type-trigger, #phoneNumbersWidget [data-phone-type]', title: 'Tipo de teléfono', body: 'Haz clic en el chip de tipo para <strong>cambiarlo</strong> entre las opciones disponibles.', position: 'right' },
-                        { selector: '#phoneNumbersWidget [onclick*="togglePhoneAddForm"]', title: 'Agregar teléfono', body: 'Usa este botón para abrir el <strong>formulario de nuevo teléfono</strong> con país, número y tipo.', position: 'top' }
-                    ]
-                },
                 interactionHistory: {
                     emoji: '💬',
                     name: 'Interaction History',
@@ -59533,14 +59514,6 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         }
                     ]
                 },
-                documents: {
-                    emoji: '📄',
-                    name: 'Documents',
-                    desc: 'Documentos asociados al cliente.',
-                    steps: [
-                        { selector: '#documentsWidget', title: 'Documents', body: 'Documentos <strong>cargados o generados</strong> para el cliente: certificados, cédulas, comprobantes.', position: 'right', prepare: function () { scrollIntoCenter(document.getElementById('documentsWidget')); } }
-                    ]
-                },
                 cards: {
                     emoji: '💳',
                     name: 'Cards (Tarjetas)',
@@ -59571,24 +59544,6 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     steps: [
                         { selector: '#moneyBoxesWidget', title: 'Money Boxes', body: 'Cajitas de <strong>ahorro programado</strong> del cliente. Cada una muestra su meta, saldo actual y progreso.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('moneyBoxesWidget')); } },
                         { selector: '.money-boxes-toolbar', title: 'Filtros de cajitas', body: 'Usa la toolbar para <strong>filtrar</strong> las cajitas por estado (Activas, Cerradas) o tipo.', position: 'bottom' }
-                    ]
-                },
-                logistic: {
-                    emoji: '📦',
-                    name: 'Logistic Tracking',
-                    desc: 'Estado y trazabilidad del envío de tarjeta.',
-                    steps: [
-                        { selector: '#logisticTrackingWidget', title: 'Logistic Tracking', body: 'Estado del <strong>envío físico</strong> de tarjeta al cliente: empresa transportadora, número de guía y eventos del recorrido.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('logisticTrackingWidget')); } },
-                        { selector: '#logisticTrackingWidget [onclick*="toggleLogisticDetail"]', title: 'Detalle de seguimiento', body: 'Expande para ver <strong>cada evento</strong> del envío: salida de bodega, en tránsito, en distribución, entregado.', position: 'left' }
-                    ]
-                },
-                riskPrometheus: {
-                    emoji: '⚠️',
-                    name: 'Risk Event / Prometheus',
-                    desc: 'Eventos de riesgo y antifraude.',
-                    steps: [
-                        { selector: '#riskEventWidget', title: 'Risk Event', body: 'Eventos de <strong>riesgo</strong> generados por el motor antifraude: intentos sospechosos, validaciones fallidas, etc.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('riskEventWidget')); } },
-                        { selector: '#prometheusWidget', title: 'Prometheus', body: 'Sistema <strong>Prometheus</strong> con métricas y alertas técnicas del cliente.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('prometheusWidget')); } }
                     ]
                 },
                 notifications: {
