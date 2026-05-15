@@ -22266,9 +22266,11 @@ Bogotá, D.C., 110011, Colombia</div>
                                 </span>
                                 <span>Call - savings.others.virtual_card</span>
                             </div>
-                            <div class="interaction-email">pepito.perez@nu.com.co <span class="copy-icon">📋</span></div>
-                            <div class="interaction-email">Case number: 00002582206 <span class="copy-icon">📋</span></div>
-                            <div class="interaction-email">Phone: +573115070655 <span class="copy-icon">📋</span></div>
+                            <div class="interaction-call-data">
+                                <div class="interaction-email">pepito.perez@nu.com.co <span class="copy-icon">📋</span></div>
+                                <div class="interaction-email">Case number: 00002582206 <span class="copy-icon">📋</span></div>
+                                <div class="interaction-email">Phone: +573115070655 <span class="copy-icon">📋</span></div>
+                            </div>
                         </div>
                         <div class="interaction-item" data-interaction-channel="chat" data-interaction-date="2026-02-12" data-chat="savings" onclick="openSavingsChatModal()" role="button" tabindex="0" style="cursor: pointer;">
                             <div class="interaction-time">02/12/2026 4:23 PM</div>
@@ -59296,13 +59298,6 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                             position: 'right'
                         },
                         {
-                            selector: '#personInfoWidget [data-tour-field="maritalStatus"]',
-                            context: '#personInfoWidget',
-                            title: 'Marital Status',
-                            body: '<strong>Estado civil</strong> del cliente: None, Single, Divorced, Married, Widower o Separated.',
-                            position: 'right'
-                        },
-                        {
                             selector: '#personInfoWidget [data-tour-field="shippingAddress"]',
                             context: '#personInfoWidget',
                             title: 'Shipping Address',
@@ -59505,7 +59500,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                             prepare: function () { tourCloseInteractionModals(); }
                         },
                         {
-                            selector: '#interactionsList .interaction-item[data-interaction-channel="phone"] .interaction-email',
+                            selector: '#interactionsList .interaction-item[data-interaction-channel="phone"] .interaction-call-data',
                             context: '#interactionWidget',
                             title: 'Datos de la llamada',
                             body: 'Cada llamada muestra el <strong>email del agente</strong>, el <strong>case number</strong> y el <strong>número telefónico</strong> desde el que se contactó al cliente. Cada uno se puede copiar con el ícono 📋.',
