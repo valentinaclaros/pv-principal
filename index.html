@@ -59519,7 +59519,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     name: 'Cards (Tarjetas)',
                     desc: 'Tarjetas físicas y virtuales, block, cancel, Card History.',
                     steps: [
-                        { selector: '#cardsWidget', title: 'Cards', body: 'Widget con <strong>todas las tarjetas</strong> del cliente: físicas y virtuales, de débito y crédito, además de adicionales.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('cardsWidget')); } },
+                        { selector: '#cardsWidget', title: 'Cards', body: 'Widget con <strong>todas las tarjetas</strong> del cliente: físicas y virtuales, de débito y crédito, además de adicionales.', position: 'left' },
                         { selector: '#cardsWidget .card-tab, #cardsWidget [role="tab"]', title: 'Tabs Débito / Crédito', body: 'Cambia entre <strong>Débito y Crédito</strong> para ver las tarjetas del tipo correspondiente.', position: 'bottom' },
                         { selector: '#cardsWidget .card-item:first-of-type', title: 'Expandir tarjeta', body: 'Haz clic en una tarjeta para <strong>ver sus detalles</strong>: número, fecha de emisión, vencimiento y estado.', position: 'left', prepare: function () { var c = document.querySelector('#cardsWidget .card-item'); if (c) c.click(); } },
                         { selector: '#cardsWidget .card-menu-btn, #cardsWidget [onclick*="toggleCardMenu"]', title: 'Menú de acciones', body: 'Abre el menú con acciones: <strong>Block</strong>, <strong>Cancel</strong>, Issue a new card, Trigger Card event, etc.', position: 'left' },
@@ -59531,7 +59531,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     name: 'Bills (Facturas)',
                     desc: 'Detalle de bill, filtros por tipo y categoría.',
                     steps: [
-                        { selector: '#billsWidget', title: 'Bills', body: 'Resumen de las <strong>facturas mensuales</strong> del cliente con su estado (pagada, abierta, cerrada).', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('billsWidget')); } },
+                        { selector: '#billsWidget', title: 'Bills', body: 'Resumen de las <strong>facturas mensuales</strong> del cliente con su estado (pagada, abierta, cerrada).', position: 'left' },
                         { selector: '#billsWidget .bill-item:first-of-type, #billsWidget [onclick*="openBillDetail"]', title: 'Abrir detalle', body: 'Haz clic en cualquier bill para abrir el <strong>modal de detalle</strong> con fechas, montos, intereses y todas las transacciones del periodo.', position: 'left' },
                         { selector: '#billsMoreFiltersBtn', title: 'Filtros de transacciones', body: 'Dentro del detalle del bill, este botón abre el modal <strong>"Filter by..."</strong> donde puedes filtrar las transacciones por <strong>Tipo</strong> (Compras, Pagos, NuPay, etc.) y <strong>Categoría</strong> (Gastos, Descuento, Impuestos). Primero abre un bill para verlo.', position: 'top', prepare: function () { var b = document.querySelector('#billsWidget [onclick*="openBillDetail"]'); if (b) b.click(); } },
                         { selector: '.bill-csv-btn', title: 'Save Movements In CSV', body: 'Descarga las transacciones del bill como archivo <strong>CSV</strong>.', position: 'top' }
@@ -59542,7 +59542,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     name: 'Money Boxes',
                     desc: 'Cajitas de ahorro y sus movimientos.',
                     steps: [
-                        { selector: '#moneyBoxesWidget', title: 'Money Boxes', body: 'Cajitas de <strong>ahorro programado</strong> del cliente. Cada una muestra su meta, saldo actual y progreso.', position: 'left', prepare: function () { scrollIntoCenter(document.getElementById('moneyBoxesWidget')); } },
+                        { selector: '#moneyBoxesWidget', title: 'Money Boxes', body: 'Cajitas de <strong>ahorro programado</strong> del cliente. Cada una muestra su meta, saldo actual y progreso.', position: 'left' },
                         { selector: '.money-boxes-toolbar', title: 'Filtros de cajitas', body: 'Usa la toolbar para <strong>filtrar</strong> las cajitas por estado (Activas, Cerradas) o tipo.', position: 'bottom' }
                     ]
                 },
@@ -59574,17 +59574,20 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             function $$(sel) { return document.querySelectorAll(sel); }
 
             function scrollIntoCenter(el) {
-                if (!el) return;
+                if (!el) return false;
                 var r = el.getBoundingClientRect();
                 var vh = window.innerHeight || document.documentElement.clientHeight;
-                var topMargin = 80;
-                var bottomMargin = 40;
-                if (r.top >= topMargin && r.top <= vh - bottomMargin) return;
+                var topMargin = 100;
+                // El elemento se considera bien posicionado solo si está en la mitad superior del viewport.
+                // Si está en la mitad inferior o fuera del viewport, se baja la pantalla para alinearlo arriba.
+                if (r.top >= 0 && r.top <= vh / 2) return false;
                 try {
                     var targetY = window.scrollY + r.top - topMargin;
                     window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                    return true;
                 } catch (e) {
                     try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (err) { el.scrollIntoView(); }
+                    return true;
                 }
             }
 
@@ -59685,8 +59688,9 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     if (pos === 'static') target.style.position = 'relative';
                     target.classList.add('tour-highlight');
                     highlightedEl = target;
-                    if (!step.noScroll) scrollIntoCenter(target);
-                    setTimeout(function () { positionTooltip(target, step.position || 'bottom'); }, 280);
+                    var didScroll = !step.noScroll && scrollIntoCenter(target);
+                    var delay = didScroll ? 560 : 120;
+                    setTimeout(function () { positionTooltip(target, step.position || 'bottom'); }, delay);
                 } else {
                     positionTooltipCenter();
                 }
