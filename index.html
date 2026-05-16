@@ -2274,6 +2274,10 @@
             z-index: 100001 !important;
         }
 
+        .bill-detail-modal.tour-modal-active {
+            z-index: 100001 !important;
+        }
+
         .tour-context-active {
             position: relative !important;
             z-index: 100001 !important;
@@ -23004,12 +23008,12 @@ Bogotá, D.C., 110011, Colombia</div>
                             <div class="collapse-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                         </div>
                     </div>
-                    <div class="widget-content" id="billsContent">
-                        <div class="bills-list">
+                    <div class="widget-content" id="billsContent" data-tour-bill="content">
+                        <div class="bills-list" data-tour-bill="list">
                             <!-- SEP 2026 -->
-                            <div class="bill-item" onclick="openBillDetail(0)">
-                                <div class="bill-month-box" style="background: #D99A50;">SEP 2026</div>
-                                <div class="bill-details">
+                            <div class="bill-item" data-tour-bill="firstItem" onclick="openBillDetail(0)">
+                                <div class="bill-month-box" data-tour-bill="firstMonthBox" style="background: #D99A50;">SEP 2026</div>
+                                <div class="bill-details" data-tour-bill="firstDetails">
                                     <div class="bill-grid-row">
                                         <span class="bill-lbl">Close Date</span>
                                         <span class="bill-lbl">Due Date</span>
@@ -35187,17 +35191,17 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
     <!-- Bill Detail Modal -->
     <div class="bill-detail-modal" id="billDetailModal">
         <div class="bill-detail-content">
-            <div class="bill-detail-header">
-                <button class="bill-close-btn" onclick="closeBillDetail()">&times;</button>
-                <button class="bill-nav-arrow left" onclick="previousBill()">‹</button>
-                <button class="bill-nav-arrow right" onclick="nextBill()">›</button>
+            <div class="bill-detail-header" data-tour-bill="modalHeader">
+                <button class="bill-close-btn" data-tour-bill="closeBtn" onclick="closeBillDetail()">&times;</button>
+                <button class="bill-nav-arrow left" data-tour-bill="navLeft" onclick="previousBill()">‹</button>
+                <button class="bill-nav-arrow right" data-tour-bill="navRight" onclick="nextBill()">›</button>
                 <h3 id="billDetailHeaderTitle">MINIMUM ESTIMATED PAYMENT</h3>
                 <p class="amount" id="billDetailAmount">$ 0,00</p>
                 <p id="billDetailHeaderSub" style="display: none; font-size: 12px; font-weight: 400; margin: 8px 0 0 0; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.95);">MINIMUM PAYMENT $ 0,00</p>
                 <p id="billDetailTotalDebt" style="font-size: 12px; font-weight: 400; margin: 6px 0 0 0; display: none;">TOTAL DEBT AT CLOSE: $ 0,00</p>
             </div>
             <div class="bill-detail-body">
-                <div class="bill-detail-row">
+                <div class="bill-detail-row" data-tour-bill="datesRow">
                     <div class="bill-detail-field">
                         <div class="bill-detail-label">CLOSE DATE</div>
                         <div class="bill-detail-value" id="billDetailCloseDate">14 DIC</div>
@@ -35270,7 +35274,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     <div class="bill-detail-field"></div>
                 </div>
                 
-                <div class="bill-detail-row" id="billDetailRowMidFees">
+                <div class="bill-detail-row" id="billDetailRowMidFees" data-tour-bill="duesRow">
                     <div class="bill-detail-field">
                         <div class="bill-detail-label">PAST DUE VALUE</div>
                         <div class="bill-detail-value" id="billDetailPastDue">$ 0,00</div>
@@ -35298,7 +35302,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     </div>
                 </div>
                 
-                <div class="bill-detail-row" id="billDetailRowPayBlock">
+                <div class="bill-detail-row" id="billDetailRowPayBlock" data-tour-bill="payRow">
                     <div class="bill-detail-field" id="billDetailPaymentsField">
                         <div class="bill-detail-label">PAYMENTS</div>
                         <div class="bill-detail-value" id="billDetailPayments">$ 0,00</div>
@@ -35331,7 +35335,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     <div class="bill-detail-value" id="billDetailBillIdValue" style="font-size: 12px; word-break: break-all;">68c5008c-415d-4036-85b8-ee170aa02b57</div>
                 </div>
                 
-                <div class="bill-detail-actions">
+                <div class="bill-detail-actions" data-tour-bill="csvWrap">
                     <button class="bill-csv-btn">
                         <span>💾</span>
                         <span>Save Movements In CSV</span>
@@ -35339,7 +35343,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 </div>
 
                 <!-- Filters Toolbar (visible for ALL bills) -->
-                <div id="billDetailPurchaseToolbar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 12px 0; border-top: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; margin: 8px 0 4px;">
+                <div id="billDetailPurchaseToolbar" data-tour-bill="filtersToolbar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 12px 0; border-top: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; margin: 8px 0 4px;">
                     <div style="display: flex; align-items: center; gap: 14px;">
                         <button type="button" id="billsMoreFiltersBtn" onclick="openBillsFilterByModal()" style="display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ccc; padding: 7px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1F1F1F; cursor: pointer;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -35355,7 +35359,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         </button>
                         <button type="button" id="billsClearFiltersBtn" onclick="clearBillsFilters()" style="background: none; border: none; font-size: 13px; color: #1F1F1F; cursor: pointer; padding: 0;">Clear filters</button>
                     </div>
-                    <button type="button" style="display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ccc; padding: 7px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1F1F1F; cursor: pointer;">
+                    <button type="button" data-tour-bill="copyPurchasesBtn" style="display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ccc; padding: 7px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; color: #1F1F1F; cursor: pointer;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
                             <path d="M5 15H4.5C3.67 15 3 14.33 3 13.5v-9C3 3.67 3.67 3 4.5 3h9C14.33 3 15 3.67 15 4.5V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -35365,10 +35369,10 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 </div>
 
                 <!-- Transaction List -->
-                <div id="billDetailTransactions" style="padding: 6px 0; display: none;">
+                <div id="billDetailTransactions" data-tour-bill="transactions" style="padding: 6px 0; display: none;">
                 </div>
                 
-                <div class="bill-detail-empty" id="billDetailEmpty">
+                <div class="bill-detail-empty" id="billDetailEmpty" data-tour-bill="empty">
                     No item found
                 </div>
             </div>
@@ -43938,6 +43942,64 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
         }
         window.tourEnsureCardsOpen = tourEnsureCardsOpen;
 
+        // Helpers del tutorial para el widget Bills
+        function tourEnsureBillsOpen() {
+            var w = document.getElementById('billsWidget');
+            if (!w) return;
+            if (w.classList.contains('collapsed')) {
+                try { toggleWidget('billsWidget'); } catch (e) {}
+            }
+        }
+        window.tourEnsureBillsOpen = tourEnsureBillsOpen;
+
+        function tourOpenBillDetail(index) {
+            if (typeof openBillDetail === 'function') {
+                try { openBillDetail(typeof index === 'number' ? index : 0); } catch (e) {}
+            }
+            var modal = document.getElementById('billDetailModal');
+            if (modal) modal.classList.add('tour-modal-active');
+        }
+        window.tourOpenBillDetail = tourOpenBillDetail;
+
+        function tourCloseBillDetail() {
+            var modal = document.getElementById('billDetailModal');
+            if (!modal) return;
+            modal.classList.remove('tour-modal-active');
+            if (typeof closeBillDetail === 'function') {
+                try { closeBillDetail(); } catch (e) {}
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+        window.tourCloseBillDetail = tourCloseBillDetail;
+
+        function tourOpenBillsFilterBy() {
+            if (typeof openBillsFilterByModal === 'function') {
+                try { openBillsFilterByModal(); } catch (e) {}
+            }
+            var modal = document.getElementById('billsFilterByModal');
+            if (modal) modal.classList.add('tour-modal-active');
+        }
+        window.tourOpenBillsFilterBy = tourOpenBillsFilterBy;
+
+        function tourCloseBillsFilterBy() {
+            var modal = document.getElementById('billsFilterByModal');
+            if (!modal) return;
+            modal.classList.remove('tour-modal-active');
+            if (typeof closeBillsFilterByModal === 'function') {
+                try { closeBillsFilterByModal(); } catch (e) {}
+            } else {
+                modal.classList.remove('active');
+            }
+        }
+        window.tourCloseBillsFilterBy = tourCloseBillsFilterBy;
+
+        function tourCleanupBills() {
+            tourCloseBillsFilterBy();
+            tourCloseBillDetail();
+        }
+        window.tourCleanupBills = tourCleanupBills;
+
         document.getElementById('profilePhotoModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeProfilePhotoModal();
         });
@@ -51477,7 +51539,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
     <!-- Bills "Filter by..." Modal -->
     <div id="billsFilterByModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="billsFilterByTitle" onclick="if (event.target === this) closeBillsFilterByModal()">
         <div class="bfm-box" onclick="event.stopPropagation()">
-            <div class="bfm-header">
+            <div class="bfm-header" data-tour-bill="bfmHeader">
                 <span class="bfm-header-icon" aria-hidden="true">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line x1="3" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -51534,7 +51596,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     </div>
                 </div>
             </div>
-            <div class="bfm-footer">
+            <div class="bfm-footer" data-tour-bill="bfmFooter">
                 <button type="button" class="bfm-btn bfm-btn--apply" id="billsFilterApplyBtn" onclick="applyBillsFilters()" disabled>Apply filters</button>
                 <button type="button" class="bfm-btn bfm-btn--reset" onclick="resetBillsFiltersInModal()">Reset filters</button>
             </div>
@@ -59633,12 +59695,30 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 bills: {
                     emoji: '🧾',
                     name: 'Bills (Facturas)',
-                    desc: 'Detalle de bill, filtros por tipo y categoría.',
+                    desc: 'Listado de bills, detalle, filtros y transacciones.',
                     steps: [
-                        { selector: '#billsWidget', title: 'Bills', body: 'Resumen de las <strong>facturas mensuales</strong> del cliente con su estado (pagada, abierta, cerrada).', position: 'left' },
-                        { selector: '#billsWidget .bill-item:first-of-type, #billsWidget [onclick*="openBillDetail"]', title: 'Abrir detalle', body: 'Haz clic en cualquier bill para abrir el <strong>modal de detalle</strong> con fechas, montos, intereses y todas las transacciones del periodo.', position: 'left' },
-                        { selector: '#billsMoreFiltersBtn', title: 'Filtros de transacciones', body: 'Dentro del detalle del bill, este botón abre el modal <strong>"Filter by..."</strong> donde puedes filtrar las transacciones por <strong>Tipo</strong> (Compras, Pagos, NuPay, etc.) y <strong>Categoría</strong> (Gastos, Descuento, Impuestos). Primero abre un bill para verlo.', position: 'top', prepare: function () { var b = document.querySelector('#billsWidget [onclick*="openBillDetail"]'); if (b) b.click(); } },
-                        { selector: '.bill-csv-btn', title: 'Save Movements In CSV', body: 'Descarga las transacciones del bill como archivo <strong>CSV</strong>.', position: 'top' }
+                        { selector: '#billsWidget', title: 'Widget Bills', body: 'En este widget encontrarás todas las <strong>facturas mensuales</strong> del cliente con su estado, fechas clave y monto. Vamos a ver cada parte.', position: 'left', prepare: function () { tourEnsureBillsOpen(); tourCleanupBills(); } },
+                        { selector: '#billsWidget [data-tour-bill="list"]', context: '#billsWidget', title: 'Lista de bills', body: 'Aquí aparecen <strong>todas las bills</strong> del cliente, una por mes. Cada bill muestra el mes, las fechas y el monto a pagar.', position: 'left', prepare: function () { tourEnsureBillsOpen(); tourCleanupBills(); } },
+                        { selector: '#billsWidget [data-tour-bill="firstItem"]', context: '#billsWidget', title: 'Anatomía de una bill', body: 'Cada bill se compone de un <strong>recuadro de color</strong> con el mes y un panel con los datos principales. Vamos a verlos en detalle.', position: 'left', prepare: function () { tourEnsureBillsOpen(); tourCleanupBills(); } },
+                        { selector: '#billsWidget [data-tour-bill="firstMonthBox"]', context: '#billsWidget', title: 'Mes y estado', body: 'El recuadro indica el <strong>mes</strong> de la bill y su color cambia según el estado: <strong>verde</strong> = pagada, <strong>naranja</strong> = abierta/en mora, <strong>celeste</strong> = en curso, <strong>rojo</strong> = vencida.', position: 'right', prepare: function () { tourEnsureBillsOpen(); tourCleanupBills(); } },
+                        { selector: '#billsWidget [data-tour-bill="firstDetails"]', context: '#billsWidget', title: 'Datos de la bill', body: 'Junto al recuadro encontrarás la <strong>Close Date</strong> (fecha de cierre), la <strong>Due Date</strong> (fecha de pago) y el <strong>Minimum estimated payment</strong> o <strong>Total on close date</strong> según corresponda.', position: 'left', prepare: function () { tourEnsureBillsOpen(); tourCleanupBills(); } },
+                        { selector: '#billDetailModal [data-tour-bill="modalHeader"]', title: 'Abrir el detalle de una bill', body: 'Al hacer clic en una bill se abre este <strong>modal de detalle</strong>. En el encabezado verás el título del concepto, el <strong>monto</strong> y, según el estado, mensajes adicionales como "MINIMUM PAYMENT" o "TOTAL DEBT AT CLOSE".', position: 'bottom', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="navLeft"]', title: 'Bill anterior', body: 'La flecha <strong>‹</strong> te lleva a la <strong>bill anterior</strong> sin tener que cerrar el modal.', position: 'right', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="navRight"]', title: 'Bill siguiente', body: 'La flecha <strong>›</strong> te lleva a la <strong>siguiente bill</strong>. Puedes navegar por todo el historial sin cerrar el modal.', position: 'left', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="closeBtn"]', title: 'Cerrar el detalle', body: 'Con la <strong>×</strong> cierras el modal y vuelves al listado de bills.', position: 'left', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="datesRow"]', title: 'Fechas del periodo', body: '<strong>CLOSE DATE</strong> es la fecha de cierre del ciclo, <strong>DUE DATE</strong> el plazo máximo de pago y <strong>PERIOD</strong> el rango de días que abarca la bill.', position: 'bottom', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="duesRow"]', title: 'Past Due Value y Fees', body: '<strong>PAST DUE VALUE</strong> es el saldo vencido y <strong>FEES</strong> los cargos asociados (intereses, comisiones, etc.).', position: 'bottom', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="payRow"]', title: 'Payments, Adjustments y Reversals', body: '<strong>PAYMENTS</strong> son los pagos aplicados, <strong>ADJUSTMENTS</strong> los ajustes a favor y <strong>REVERSALS</strong> las reversiones registradas en el periodo.', position: 'bottom', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="csvWrap"]', title: 'Save Movements In CSV', body: 'Este botón descarga <strong>todos los movimientos</strong> del periodo en un archivo <strong>CSV</strong> para análisis o respaldo.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); } },
+                        { selector: '#billDetailModal [data-tour-bill="filtersToolbar"]', title: 'Barra de filtros', body: 'Desde esta barra puedes filtrar las transacciones del periodo y copiar la información clave. Tiene tres acciones: <strong>More filters</strong>, <strong>Clear filters</strong> y <strong>Copy purchases</strong>.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourCloseBillsFilterBy(); } },
+                        { selector: '#billsMoreFiltersBtn', title: 'More filters', body: 'Al hacer clic abre el modal <strong>"Filter by..."</strong> para filtrar las transacciones por tipo y categoría.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourCloseBillsFilterBy(); } },
+                        { selector: '#billsFilterByModal [data-tour-bill="bfmHeader"]', title: 'Filter by...', body: 'Este es el modal de <strong>filtros avanzados</strong>. Tiene dos secciones plegables: <strong>Tipo</strong> y <strong>Categorías</strong>.', position: 'bottom', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourOpenBillsFilterBy(); } },
+                        { selector: '#billsFilterByModal .bfm-section[data-section="tipo"]', title: 'Filtrar por Tipo', body: 'Aquí puedes filtrar por <strong>tipo de movimiento</strong>: Compras, Financiamientos, Pagos, NuPay, Recargas, Compras revertidas, Suscripciones Nu, Descuentos, Ajustes y otros. Usa <strong>Check all</strong> para marcar todos.', position: 'right', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourOpenBillsFilterBy(); } },
+                        { selector: '#billsFilterByModal .bfm-section[data-section="categorias"]', title: 'Filtrar por Categorías', body: 'Aquí filtras por <strong>categoría contable</strong>: Gastos totales, Descuento e Impuestos. También tiene <strong>Check all</strong>.', position: 'right', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourOpenBillsFilterBy(); } },
+                        { selector: '#billsFilterByModal [data-tour-bill="bfmFooter"]', title: 'Apply y Reset', body: '<strong>Apply filters</strong> aplica la selección al listado y <strong>Reset filters</strong> limpia las casillas marcadas dentro del modal.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourOpenBillsFilterBy(); } },
+                        { selector: '#billsClearFiltersBtn', title: 'Clear filters', body: 'En la barra de filtros del modal de bill, <strong>Clear filters</strong> elimina <strong>todos los filtros aplicados</strong> y vuelve a mostrar todas las transacciones del periodo.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourCloseBillsFilterBy(); } },
+                        { selector: '#billDetailModal [data-tour-bill="copyPurchasesBtn"]', title: 'Copy purchases', body: 'Copia al portapapeles las <strong>compras del periodo</strong> en un formato listo para pegar en herramientas internas o reportes.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourCloseBillsFilterBy(); } },
+                        { selector: '#billDetailModal [data-tour-bill="transactions"], #billDetailModal [data-tour-bill="empty"]', title: 'Listado de transacciones', body: 'Debajo de la barra aparecen <strong>todas las transacciones</strong> del periodo. Si no hay movimientos que coincidan con los filtros, verás el mensaje <strong>"No item found"</strong>.', position: 'top', prepare: function () { tourEnsureBillsOpen(); tourOpenBillDetail(0); tourCloseBillsFilterBy(); } }
                     ]
                 },
                 moneyBoxes: {
@@ -59981,6 +60061,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 document.getElementById('tourTooltip').classList.remove('show');
                 closePanelsForTour();
                 try { if (typeof tourCleanupCardsFull === 'function') tourCleanupCardsFull(); } catch (e) {}
+                try { if (typeof tourCleanupBills === 'function') tourCleanupBills(); } catch (e) {}
                 currentChapterId = null;
                 currentStepIndex = 0;
             }
