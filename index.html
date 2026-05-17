@@ -59680,7 +59680,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         { selector: '#cardsWidget [data-tour-card="tabs"]', context: '#cardsWidget', title: 'Tipos de tarjeta', body: 'Cambia entre <strong>Physical</strong> (físicas), <strong>Virtual</strong> y <strong>Additional</strong> (adicionales). El número al lado de cada tab indica cuántas tarjetas hay de ese tipo.', position: 'bottom', prepare: function () { tourEnsureCardsOpen(); tourCloseCardsFiltersDropdown(); } },
                         { selector: '#cardsContent', context: '#cardsWidget', title: 'Lista de tarjetas', body: 'Acá aparecen <strong>todas las tarjetas</strong> del tipo seleccionado. Cada fila muestra un resumen: tipo, ID y los últimos 4 dígitos.', position: 'left', prepare: function () { tourEnsureCardsOpen(); } },
                         { selector: '#cardsWidget [data-tour-card="physicalDebitRow"]', context: '#cardsWidget', title: 'Resumen de la tarjeta', body: 'Cada fila muestra la información clave de una tarjeta: tipo, ID y últimos 4 dígitos.', position: 'left', prepare: function () { tourEnsureCardsOpen(); } },
-                        { selector: '#cardsWidget [data-tour-card="rowType"]', context: '#cardsWidget', title: 'Tipo y badge', body: 'Indica si la tarjeta es <strong>Física</strong> o <strong>Virtual</strong> y si es <strong>Débito</strong> o <strong>Crédito</strong>. Si la tarjeta está bloqueada, aparece un <strong>candado</strong> y si está cancelada aparecerá una <strong>X en rojo</strong>.', position: 'left', prepare: function () { tourEnsureCardsOpen(); var icon = document.querySelector('#cardsWidget [data-tour-card="physicalDebitRow"] .card-icon-wrapper'); if (icon) icon.classList.add('tour-highlight-extra'); } },
+                        { selector: '#cardsWidget [data-tour-card="rowType"]', context: '#cardsWidget', title: 'Tipo y badge', body: 'Indica si la tarjeta es <strong>Física</strong> o <strong>Virtual</strong> y si es <strong>Débito</strong> o <strong>Crédito</strong>. Si la tarjeta está bloqueada, aparece un <strong>candado</strong> y si está cancelada aparecerá una <strong>X en rojo</strong>.', position: 'left', extraHighlights: ['#cardsWidget [data-tour-card="physicalDebitRow"] .card-icon-wrapper'], prepare: function () { tourEnsureCardsOpen(); } },
                         { selector: '#physicalDetails', context: '#cardsWidget', title: 'Detalle de la tarjeta', body: 'Al hacer clic en la fila, la tarjeta se <strong>despliega</strong> y muestra toda su información detallada. Vamos a verla por partes.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); } },
                         { selector: '#physicalDetails [data-tour-card="actionsHeader"]', context: '#cardsWidget', title: 'Acciones de la tarjeta', body: 'Al abrir el menú ⋮ encontrarás opciones para gestionar la tarjeta: <strong>Block</strong>, <strong>Reissue card</strong>, <strong>Issue a new card without cancelling</strong>, <strong>Trigger a Card event</strong> y <strong>Cancel this card</strong>.', position: 'bottom', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourOpenCardMenu('physicalMenu'); } },
                         { selector: '#physicalDetails [data-tour-card="historyBtn"]', context: '#cardsWidget', title: 'Card History', body: 'Abre el <strong>historial de estados</strong> de la tarjeta. Cada vez que se bloquea, desbloquea o cancela, se registra una entrada con la fecha y motivo.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourCloseAllCardMenus(); } },
@@ -59873,6 +59873,14 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                     if (pos === 'static') target.style.position = 'relative';
                     target.classList.add('tour-highlight');
                     highlightedEl = target;
+                    if (step.extraHighlights && step.extraHighlights.length) {
+                        for (var ehi = 0; ehi < step.extraHighlights.length; ehi++) {
+                            try {
+                                var exEl = document.querySelector(step.extraHighlights[ehi]);
+                                if (exEl) exEl.classList.add('tour-highlight-extra');
+                            } catch (e) { /* noop */ }
+                        }
+                    }
                     var didScroll = !step.noScroll && scrollIntoCenter(target);
                     var delay = didScroll ? 560 : 120;
                     setTimeout(function () {
