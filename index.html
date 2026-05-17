@@ -2007,10 +2007,10 @@
         .tour-highlight,
         .tour-highlight-extra {
             z-index: 100001 !important;
-            box-shadow: 0 0 0 4px #7C4DBC, 0 0 0 8px rgba(124, 77, 188, 0.35), 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+            outline: 3px solid #7C4DBC;
+            outline-offset: 8px;
             border-radius: 8px !important;
-            transition: box-shadow 0.18s ease;
-            background-clip: padding-box;
+            transition: outline-offset 0.18s ease;
         }
 
         .tour-highlight-extra {
@@ -2280,6 +2280,18 @@
         }
 
         .bill-detail-modal.tour-modal-active {
+            z-index: 100001 !important;
+        }
+
+        body.tour-active .card-menu-dropdown.active {
+            z-index: 100002 !important;
+        }
+
+        body.tour-active .card-status-history-overlay.show {
+            display: none !important;
+        }
+
+        body.tour-active .card-status-history-sidebar.show {
             z-index: 100001 !important;
         }
 
@@ -43944,8 +43956,34 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             }
             tourCloseAllCardMenus();
             tourCloseCardsFiltersDropdown();
+            try { if (typeof tourCloseCardHistorySidebar === 'function') tourCloseCardHistorySidebar(); } catch (e) {}
         }
         window.tourEnsureCardsOpen = tourEnsureCardsOpen;
+
+        function tourOpenCardHistorySidebar() {
+            var overlay = document.getElementById('cardStatusHistoryOverlay');
+            var sidebar = document.getElementById('cardStatusHistorySidebar');
+            if (typeof renderCardHistoryTimeline === 'function') {
+                try { renderCardHistoryTimeline('physicalDebit'); } catch (e) {}
+            }
+            if (overlay) overlay.classList.add('show');
+            if (sidebar) {
+                sidebar.classList.add('show');
+                sidebar.setAttribute('aria-hidden', 'false');
+            }
+        }
+        window.tourOpenCardHistorySidebar = tourOpenCardHistorySidebar;
+
+        function tourCloseCardHistorySidebar() {
+            var overlay = document.getElementById('cardStatusHistoryOverlay');
+            var sidebar = document.getElementById('cardStatusHistorySidebar');
+            if (overlay) overlay.classList.remove('show');
+            if (sidebar) {
+                sidebar.classList.remove('show');
+                sidebar.setAttribute('aria-hidden', 'true');
+            }
+        }
+        window.tourCloseCardHistorySidebar = tourCloseCardHistorySidebar;
 
         // Helpers del tutorial para el widget Bills
         function tourEnsureBillsOpen() {
@@ -59682,8 +59720,8 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                         { selector: '#cardsWidget [data-tour-card="physicalDebitRow"]', context: '#cardsWidget', title: 'Resumen de la tarjeta', body: 'Cada fila muestra la información clave de una tarjeta: tipo, ID y últimos 4 dígitos.', position: 'left', prepare: function () { tourEnsureCardsOpen(); } },
                         { selector: '#cardsWidget [data-tour-card="rowType"]', context: '#cardsWidget', title: 'Tipo y badge', body: 'Indica si la tarjeta es <strong>Física</strong> o <strong>Virtual</strong> y si es <strong>Débito</strong> o <strong>Crédito</strong>. Si la tarjeta está bloqueada, aparece un <strong>candado</strong> y si está cancelada aparecerá una <strong>X en rojo</strong>.', position: 'bottom', extraHighlights: ['#cardsWidget [data-tour-card="physicalDebitRow"] .card-icon-wrapper'], prepare: function () { tourEnsureCardsOpen(); } },
                         { selector: '#physicalDetails', context: '#cardsWidget', title: 'Detalle de la tarjeta', body: 'Al hacer clic en la fila, la tarjeta se <strong>despliega</strong> y muestra toda su información detallada. Vamos a verla por partes.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); } },
-                        { selector: '#physicalDetails [data-tour-card="actionsHeader"]', context: '#cardsWidget', title: 'Acciones de la tarjeta', body: 'Al abrir el menú ⋮ encontrarás opciones para gestionar la tarjeta: <strong>Block</strong>, <strong>Reissue card</strong>, <strong>Issue a new card without cancelling</strong>, <strong>Trigger a Card event</strong> y <strong>Cancel this card</strong>.', position: 'bottom', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourOpenCardMenu('physicalMenu'); } },
-                        { selector: '#physicalDetails [data-tour-card="historyBtn"]', context: '#cardsWidget', title: 'Card History', body: 'Abre el <strong>historial de estados</strong> de la tarjeta. Cada vez que se bloquea, desbloquea o cancela, se registra una entrada con la fecha y motivo.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourCloseAllCardMenus(); } },
+                        { selector: '#physicalDetails [data-tour-card="actionsHeader"]', context: '#cardsWidget', title: 'Acciones de la tarjeta', body: 'Al abrir el menú ⋮ encontrarás opciones para gestionar la tarjeta: <strong>Block</strong>, <strong>Reissue card</strong>, <strong>Issue a new card without cancelling</strong>, <strong>Trigger a Card event</strong> y <strong>Cancel this card</strong>.', position: 'bottom', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); setTimeout(function () { tourOpenCardMenu('physicalMenu'); }, 350); } },
+                        { selector: '#cardStatusHistorySidebar', title: 'Card History', body: 'Aquí se despliega el <strong>historial completo de estados</strong> de la tarjeta. Cada vez que se bloquea, desbloquea o cancela, se registra una entrada con su <strong>fecha y motivo</strong>.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourCloseAllCardMenus(); tourOpenCardHistorySidebar(); } },
                         { selector: '#physicalDetails [data-tour-card="dates"]', context: '#cardsWidget', title: 'Fechas clave', body: '<strong>GOOD THROUGH</strong> es la fecha de vencimiento de la tarjeta y <strong>MEMBER SINCE</strong> indica desde cuándo el cliente la tiene.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourCloseAllCardMenus(); } },
                         { selector: '#physicalDetails [data-tour-card="number"]', context: '#cardsWidget', title: 'Card Number y Profile', body: '<strong>CARD NUMBER</strong> aparece oculto por seguridad. Haz clic en el 👁 para revelarlo. <strong>PROFILE</strong> indica la modalidad técnica de la tarjeta (debit_single, credit, etc.).', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourCloseAllCardMenus(); } },
                         { selector: '#physicalDetails [data-tour-card="product"]', context: '#cardsWidget', title: 'Producto y categoría', body: '<strong>PRODUCT DESCRIPTION</strong> es el nombre comercial del producto (Standard, Premium, etc.) y <strong>CATEGORY</strong> es la categoría interna del producto.', position: 'left', prepare: function () { tourEnsureCardsOpen(); tourExpandCard('physicalDetails'); tourCloseAllCardMenus(); } },
@@ -59821,6 +59859,7 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
                 closeTourChapters();
                 currentChapterId = chapterId;
                 currentStepIndex = 0;
+                document.body.classList.add('tour-active');
                 document.getElementById('tourBackdrop').classList.add('show');
                 document.getElementById('tourTooltip').classList.add('show');
                 showStep();
@@ -60067,11 +60106,13 @@ Recuerda que estamos disponibles 24/7 para lo que necesites. Un abrazo. Equipo N
             function endTour() {
                 clearHighlight();
                 clearTourContext();
+                document.body.classList.remove('tour-active');
                 document.getElementById('tourBackdrop').classList.remove('show');
                 document.getElementById('tourTooltip').classList.remove('show');
                 closePanelsForTour();
                 try { if (typeof tourCleanupCardsFull === 'function') tourCleanupCardsFull(); } catch (e) {}
                 try { if (typeof tourCleanupBills === 'function') tourCleanupBills(); } catch (e) {}
+                try { if (typeof tourCloseCardHistorySidebar === 'function') tourCloseCardHistorySidebar(); } catch (e) {}
                 currentChapterId = null;
                 currentStepIndex = 0;
             }
